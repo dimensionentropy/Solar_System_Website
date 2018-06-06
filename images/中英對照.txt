@@ -1,0 +1,9 @@
+水星 mercury
+金星 venus
+地球 Earth 
+火星 Mars 
+木星 Jupiter 
+土星 Saturn 
+天王星 Uranus 
+海王星 Neptune 
+冥王星 Pluto
