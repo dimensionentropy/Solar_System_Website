@@ -4,14 +4,133 @@
     <meta charset="UTF-8">
     <title>Do not click the black hole</title>
     <style>
+        #preloadPrecentage {
+            color:white;
+            font-size:400%;
+            left: calc(42%);
+            position: absolute;
+            top: calc(70%);
+            text-align:center;
+        }
+        #preloadContainer {
+            height: 400px;
+            left: calc(50% - 200px);
+            position: absolute;
+            top: calc(50% - 200px);
+            width: 400px;
+        }
+
+            #preloadContainer #sun {
+                background-color: yellow;
+                border-radius: 50%;
+                -webkit-box-shadow: 0 0 30px white;
+                box-shadow: 0 0 30px white;
+                height: 100px;
+                left: 150px;
+                position: absolute;
+                top: 150px;
+                width: 100px;
+            }
+
+            #preloadContainer .orbit {
+                border: solid;
+                border-color: white transparent transparent transparent;
+                border-radius: 50%;
+                border-width: 1px 1px 0 0;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                position: absolute;
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+                -webkit-transform-origin: center;
+                transform-origin: center;
+            }
+
+                #preloadContainer .orbit#earth-orbit {
+                    -webkit-animation: orbit 9.1s linear infinite;
+                    animation: orbit 9.1s linear infinite;
+                    height: 300px;
+                    left: 50px;
+                    top: 50px;
+                    width: 300px;
+                }
+
+                #preloadContainer .orbit#moon-orbit {
+                    -webkit-animation: orbit 0.7s linear infinite;
+                    animation: orbit 0.7s linear infinite;
+                    height: 80px;
+                    left: -25px;
+                    top: -25px;
+                    width: 80px;
+                }
+
+                #preloadContainer .orbit .globe {
+                    border-radius: 50%;
+                    position: absolute;
+                }
+
+                    #preloadContainer .orbit .globe#earth {
+                        background: aqua;
+                        height: 30px;
+                        right: 28px;
+                        top: 28px;
+                        width: 30px;
+                    }
+
+                    #preloadContainer .orbit .globe#moon {
+                        background: #d6d6d6;
+                        height: 12px;
+                        right: 2px;
+                        top: 8px;
+                        width: 12px;
+                    }
+
+        @-webkit-keyframes orbit {
+            to {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes orbit {
+            to {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
         body {
             font-family: Monospace;
-            background: #f0f0f0;
+            background: black;
             margin: 0px;
             overflow: hidden;
         }       
-        button, input{
+        #message {
+            position:absolute;        
+            color:white;
+            font-size:200%;
+            top:calc(100% - 80px);
+            left:20px;
+        }
+        #buttonTable{
+            width:100%;
+        }
+        table {
             position:absolute;
+        }
+        button, input {          
+           width:100%;
+           font-size:100%;
+           border-radius:5px;
+        }        
+        button:hover {
+            background-image: linear-gradient( to right, #FFFFFF, #DDDDDD, #888888, #444444, #000000 );
+            animation: slidebg 5s linear infinite;
+        }
+
+        @keyframes slidebg {
+            to {
+                background-position: 20vw;
+            }
         }
     </style>
 </head>
@@ -20,453 +139,489 @@
     <script type="text/javascript" src="three.js-master/build/three.js"></script>
     <script type="text/javascript" src="three.js-master\examples\js\controls\OrbitControls.js"></script>
     <script type="text/javascript">
-
-    var sunLight;
-    var container;
-    var camera, scene, renderer;
-    var controls, cameraTarget = new THREE.Vector3(0, 0, 0);
-    var rotateSpeed = 0.0008;
-    function start() {
-        main();
-        render();
-        //主函数
-    }
-    var cameraDistance = 50;
-    var ballSize = 0.65;//basic on earth
-    var cameraPos = {
-        x: 0,
-        y: 0,
-        z: cameraDistance
-    }
-
-    function main(){
-        container = document.getElementById("container");
-        document.body.appendChild(container);
-        scene = new THREE.Scene();//创建一个新场景
-        //添加一个透视相机
-        camera = new THREE.PerspectiveCamera(cameraDistance,
-                      window.innerWidth/window.innerHeight, 1, 1000);
-        camera.position.set(cameraPos.x, cameraPos.y, cameraPos.z);//设置相机位置
-        camera.lookAt(new THREE.Vector3(0, 0, 0));//让相机指向原点
-        controls = new THREE.OrbitControls(camera, container);
-        controls.minDistance = cameraDistance *0.01;
-        controls.maxDistance = cameraDistance * 2;
-        //渲染
-        //antialias:true增加抗锯齿效果
-        renderer = new THREE.WebGLRenderer({antialias:true});
-        renderer.setClearColor(new THREE.Color(0x00000));//设置窗口背景颜色为黑
-        renderer.setSize(window.innerWidth, window.innerHeight);//设置窗口尺寸
-        renderer.shadowMap.enabled = true;
-        //将renderer关联到container，这个过程类似于获取canvas元素
-        container.appendChild(renderer.domElement);
-        earth();
-        moon();
-        sun();
-        /*var glow = new THREE.Sprite(new THREE.SpriteMaterial(
-        {
-            useScreenCoordinates: false,
-            color: 0xFEAB10, transparent: true, blending: THREE.AdditiveBlending
-        }));
-        glow.position.set(0, 0, 0);
-        scene.add(glow);*/
-        mercury();
-        venus();
-        mars();
-        jupiter();
-        saturn();
-        uranus();
-        neptune();
-        pluto();
-        makeStars();
-        //给场景添加光源
-        //自然光
-        var ambientLight = new THREE.AmbientLight(0x999999);
-        scene.add(ambientLight);
-        sunLight = new THREE.PointLight(0xDDDDAA, 2, 100);
-        scene.add(sunLight);
-        window.addEventListener('resize', onWindowResize, false);
-        document.getElementById('sun').addEventListener('click', function () {
-            cameraTarget = sun.position;
-            controls.target = sun.position;
-        }, false);
-        document.getElementById('mercury').addEventListener('click', function () {
-            cameraTarget = mercury.position;
-            controls.target = mercury.position;
-        }, false);
-        document.getElementById('venus').addEventListener('click', function () {
-            cameraTarget = venus.position;
-            controls.target = venus.position;
-        }, false);
-        document.getElementById('earth').addEventListener('click', function () {
-            cameraTarget = earth.position;
-            controls.target = earth.position;
-        }, false);
-        document.getElementById('mars').addEventListener('click', function () {
-            cameraTarget = mars.position;
-            controls.target = mars.position;
-        }, false);
-        document.getElementById('jupiter').addEventListener('click', function () {
-            cameraTarget = jupiter.position;
-            controls.target = jupiter.position;
-        }, false);
-        document.getElementById('saturn').addEventListener('click', function () {
-            cameraTarget = saturn.position;
-            controls.target = saturn.position;
-        }, false);
-        document.getElementById('uranus').addEventListener('click', function () {
-            cameraTarget = uranus.position;
-            controls.target = uranus.position;
-        }, false);
-        document.getElementById('neptune').addEventListener('click', function () {
-            cameraTarget = neptune.position;
-            controls.target = neptune.position;
-        }, false);
-        document.getElementById('pluto').addEventListener('click', function () {
-            cameraTarget = pluto.position;//換看的對象
-            controls.target = pluto.position;//換視角
-        }, false);
-        document.getElementById('updateSpeed').addEventListener('click', function () { var speed = parseInt(document.getElementById("speed").value);  if (!isNaN(speed)) rotateSpeed = speed * 0.00004; }, false);
-    }
-
-    function onWindowResize() {
-        camera.aspect = window.innerWidth / window.innerHeight;//aspect是甚麼?
-        camera.updateProjectionMatrix();//camera 更新
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    }
-
-    function makeStars() {
-        var starNum = 20000;
-        var positions = new Float32Array(starNum * 3);
-        var colors = new Float32Array(starNum * 3);
-        var gap = 100;
-        for (let i = 0; i < positions.length; i += 3) {
-           let x = (Math.random() * 2 * gap);
-           let y = (Math.random() * 2 * gap);
-           let z = (Math.random() * 2 * gap);
-
-           var pos = { x, y, z };
-            var biggest = x > y ? x > z ? 'x' : 'z' : y > z ? 'y' : 'z';
-            if (pos[biggest] < gap) {
-                pos[biggest] += gap;
-                x = pos['x'];//可能被pos[biggest]改掉
-                y = pos['y'];
-                z = pos['z'];
+        var manager;
+        function initial() {
+            manager = new THREE.LoadingManager;
+            manager.onStart = function () {
+                console.log("start");
             }
-
-           positions[i] = x * (Math.random() < 0.5 ? 1 : -1);
-           positions[i + 1] = y * (Math.random() < 0.5 ? 1 : -1);
-           positions[i + 2] = z * (Math.random() < 0.5 ? 1 : -1);
-
-            let color = new THREE.Color();
-            color.setRGB((Math.random() + 1) / 2, (Math.random() + 1) / 2, (Math.random() + 1) / 2)
-
-            colors[i] = color.r;
-            colors[i + 1] = color.g;
-            colors[i + 2] = color.b;
+            manager.onLoad = function () {
+                document.getElementById("preloadContainer").style.display = "none";
+                document.getElementById("preloadPrecentage").style.display = "none";
+                document.getElementById("preloadPrecentage").innerHTML = "跑了100光年";
+                start();
+                console.log("done");
+            };
+            manager.onProgress = function (item, loaded, total) {
+                document.getElementById("preloadPrecentage").innerHTML = "跑了" + Math.floor((loaded + 1) / total * 100) + "光年";
+                console.log(item, loaded, total);
+            };
+            scene = new THREE.Scene();//创建一个新场景
+            //添加一个透视相机
+            camera = new THREE.PerspectiveCamera(cameraDistance,
+                window.innerWidth / window.innerHeight, 1, 1000);
+            camera.position.set(cameraPos.x, cameraPos.y, cameraPos.z);//设置相机位置
+            camera.lookAt(new THREE.Vector3(0, 0, 0));//让相机指向原点
+            //渲染
+            //antialias:true增加抗锯齿效果
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setClearColor(new THREE.Color(0x00000));//设置窗口背景颜色为黑
+            renderer.setSize(window.innerWidth, window.innerHeight);//设置窗口尺寸
+            renderer.shadowMap.enabled = true;
+            //将renderer关联到container，这个过程类似于获取canvas元素
+            earth();
+            moon();
+            sun();
+            mercury();
+            venus();
+            mars();
+            jupiter();
+            saturn();
+            uranus();
+            neptune();
+            pluto();
+            makeStars();
         }
-        var bufferGeometry = new THREE.BufferGeometry();
-        bufferGeometry.addAttribute("position", new THREE.BufferAttribute(positions, 3));
-        bufferGeometry.addAttribute("color", new THREE.BufferAttribute(colors, 3));
-        bufferGeometry.computeBoundingSphere();
-        var stars = new THREE.Points(bufferGeometry, new THREE.PointsMaterial({
-            size: 0.5,
-            vertexColors : THREE.VertexColors
-        }))
-        scene.add(stars);
-    }
+
+        var sunLight;
+        var container;
+        var camera, scene, renderer;
+        var controls, cameraTarget = new THREE.Vector3(0, 0, 0);
+        var rotateSpeed = 0.0008;
+        function start() {
+            main();
+            render();
+        }
+        var cameraDistance = 60;
+        var ballSize = 0.65;//basic on earth
+        var cameraPos = {
+            x: 0,
+            y: 0,
+            z: cameraDistance
+        }
+
+        function main() {
+            container = document.getElementById("container");
+            document.body.appendChild(container);
+            container.appendChild(renderer.domElement);
+            controls = new THREE.OrbitControls(camera, container);
+            controls.minDistance = cameraDistance * 0.01;
+            controls.maxDistance = cameraDistance * 2;
+            //给场景添加光源
+            //自然光
+            var ambientLight = new THREE.AmbientLight(0x999999);
+            scene.add(ambientLight);
+            sunLight = new THREE.PointLight(0xDDDDAA, 2, 100);
+            scene.add(sunLight);
+            window.addEventListener('resize', onWindowResize, false);
+            document.getElementById('sun').addEventListener('click', function () {
+                cameraTarget = sun.position;
+                controls.target = sun.position;
+                document.getElementById("message").innerHTML = '太陽<br>Sun';
+            }, false);
+            document.getElementById('mercury').addEventListener('click', function () {
+                cameraTarget = mercury.position;
+                controls.target = mercury.position;
+                document.getElementById("message").innerHTML = '水星<br>Mercury';
+            }, false);
+            document.getElementById('venus').addEventListener('click', function () {
+                cameraTarget = venus.position;
+                controls.target = venus.position;
+                document.getElementById("message").innerHTML = '金星<br>Venus';
+            }, false);
+            document.getElementById('earth').addEventListener('click', function () {
+                cameraTarget = earth.position;
+                controls.target = earth.position;
+                document.getElementById("message").innerHTML = '地球<br>Earth';
+            }, false);
+            document.getElementById('mars').addEventListener('click', function () {
+                cameraTarget = mars.position;
+                controls.target = mars.position;
+                document.getElementById("message").innerHTML = '火星<br>Mars';
+            }, false);
+            document.getElementById('jupiter').addEventListener('click', function () {
+                cameraTarget = jupiter.position;
+                controls.target = jupiter.position;
+                document.getElementById("message").innerHTML = '木星<br>Jupiter';
+            }, false);
+            document.getElementById('saturn').addEventListener('click', function () {
+                cameraTarget = saturn.position;
+                controls.target = saturn.position;
+                document.getElementById("message").innerHTML = '土星<br>Saturn';
+            }, false);
+            document.getElementById('uranus').addEventListener('click', function () {
+                cameraTarget = uranus.position;
+                controls.target = uranus.position;
+                document.getElementById("message").innerHTML = '天王星<br>Uranus';
+            }, false);
+            document.getElementById('neptune').addEventListener('click', function () {
+                cameraTarget = neptune.position;
+                controls.target = neptune.position;
+                document.getElementById("message").innerHTML = '海王星<br>Neptune';
+            }, false);
+            document.getElementById('pluto').addEventListener('click', function () {
+                cameraTarget = pluto.position;//換看的對象
+                controls.target = pluto.position;//換視角
+                document.getElementById("message").innerHTML = '冥王星<br>Pluto';
+            }, false);
+            document.getElementById('updateSpeed').addEventListener('click', function () { var speed = parseInt(document.getElementById("speed").value); if (!isNaN(speed)) rotateSpeed = speed * 0.00004; }, false);
+        }
+
+        function onWindowResize() {
+            document.getElementById("message").style.top = window.innerHeight - 80 + 'px';
+            camera.aspect = window.innerWidth / window.innerHeight;//aspect是甚麼?
+            camera.updateProjectionMatrix();//camera 更新
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function makeStars() {
+            var starNum = 20000;
+            var positions = new Float32Array(starNum * 3);
+            var colors = new Float32Array(starNum * 3);
+            var gap = 120;
+            for (let i = 0; i < positions.length; i += 3) {
+                let x = (Math.random() * 2 * gap);
+                let y = (Math.random() * 2 * gap);
+                let z = (Math.random() * 2 * gap);
+
+                var pos = { x, y, z };
+                var biggest = x > y ? x > z ? 'x' : 'z' : y > z ? 'y' : 'z';
+                if (pos[biggest] < gap) {
+                    pos[biggest] += gap;
+                    x = pos['x'];//可能被pos[biggest]改掉
+                    y = pos['y'];
+                    z = pos['z'];
+                }
+
+                positions[i] = x * (Math.random() < 0.5 ? 1 : -1);
+                positions[i + 1] = y * (Math.random() < 0.5 ? 1 : -1);
+                positions[i + 2] = z * (Math.random() < 0.5 ? 1 : -1);
+
+                let color = new THREE.Color();
+                color.setRGB((Math.random() + 1) / 2, (Math.random() + 1) / 2, (Math.random() + 1) / 2)
+
+                colors[i] = color.r;
+                colors[i + 1] = color.g;
+                colors[i + 2] = color.b;
+            }
+            var bufferGeometry = new THREE.BufferGeometry();
+            bufferGeometry.addAttribute("position", new THREE.BufferAttribute(positions, 3));
+            bufferGeometry.addAttribute("color", new THREE.BufferAttribute(colors, 3));
+            bufferGeometry.computeBoundingSphere();
+            var stars = new THREE.Points(bufferGeometry, new THREE.PointsMaterial({
+                size: 0.5,
+                vertexColors: THREE.VertexColors
+            }))
+            scene.add(stars);
+        }
 
         //创建一个球
-    var earth;
-    var moon;
-    var sun;
-    var mercury;//水星
-    var venus;
-    var mars; //火星
-    var jupiter;//木星
-    var saturn;//土星
-    var saturnRing1;
-    var saturnRing2;
-    var uranus;//天王星
-    var uranusRing;
-    var neptune;//海王星
-    var pluto;//冥王星
+        var earth;
+        var moon;
+        var sun;
+        var mercury;//水星
+        var venus;
+        var mars; //火星
+        var jupiter;//木星
+        var saturn;//土星
+        var saturnRing1;
+        var saturnRing2;
+        var uranus;//天王星
+        var uranusRing;
+        var neptune;//海王星
+        var pluto;//冥王星
 
-    var angleEarth = 1.57;
-    var angleMoon = 1.57;
-    var angleMoon = 1.57;
-    var angleMecury = 1.57;
-    var angleVenus = 1.57;
-    var angleMars = 1.57;
-    var angleJupiter = 1.57;
-    var angleSaturn = 3.6;
-    var angleUranus = 1.8;
-    var angleNeptune = -1;
-    var anglePluto = 1.2;
+        var angleEarth = 1.57;
+        var angleMoon = 1.57;
+        var angleMoon = 1.57;
+        var angleMecury = 1.57;
+        var angleVenus = 1.57;
+        var angleMars = 1.57;
+        var angleJupiter = 1.57;
+        var angleSaturn = 3.6;
+        var angleUranus = 1.8;
+        var angleNeptune = -1;
+        var anglePluto = 1.2;
 
-    /*var angleEarth = 1.57;
-    var angleMecury = 1.57;
-    var angleVenus = 1.57;
-    var angleMars = 1.57;
-    var angleJupiter = 1.57;
-    var angleSaturn = 1.57;
-    var angleUranus = 1.57;
-    var angleNeptune = 1.57;
-    var anglePluto = 1.57;*/
+        /*var angleEarth = 1.57;
+        var angleMecury = 1.57;
+        var angleVenus = 1.57;
+        var angleMars = 1.57;
+        var angleJupiter = 1.57;
+        var angleSaturn = 1.57;
+        var angleUranus = 1.57;
+        var angleNeptune = 1.57;
+        var anglePluto = 1.57;*/
 
-    var earthDistance = ballSize * 25;
-    var mercuryDistance = earthDistance * 0.6;//水星
-    var venusDistance = earthDistance * 0.8;
-    var marsDistance = earthDistance * 1.2; //火星
-    var jupiterDistance = earthDistance * 1.6;//木星
-    var saturnDistance = earthDistance * 1.8;//土星
-    var uranusDistance = earthDistance * 2.0;//天王星
-    var neptuneDistance = earthDistance * 2.2;//海王星
-    var plutoDistance = earthDistance * 2.4;//冥王星
+        var earthDistance = ballSize * 25;
+        var mercuryDistance = earthDistance * 0.6;//水星
+        var venusDistance = earthDistance * 0.8;
+        var marsDistance = earthDistance * 1.2; //火星
+        var jupiterDistance = earthDistance * 1.6;//木星
+        var saturnDistance = earthDistance * 1.8;//土星
+        var uranusDistance = earthDistance * 2.0;//天王星
+        var neptuneDistance = earthDistance * 2.2;//海王星
+        var plutoDistance = earthDistance * 2.4;//冥王星
 
-    function earth() {
-        earth = makePlanet(ballSize, 'images/earth_8k.jpg', earthDistance);//make model
-        earth.rotation.z += 0.5;
-        earth.position.set(0, 0, 0);//set earth position
-        scene.add(earth);//add earth to scene
+        function earth() {
+            earth = makePlanet(ballSize, 'images/earth_8k.jpg', earthDistance);//make model
+            earth.rotation.z += 0.5;
+            earth.position.set(0, 0, 0);//set earth position
+            scene.add(earth);//add earth to scene
         }
 
-    function moon() {
-        moon = makePlanet(ballSize * 0.28, 'images/moon.jpg');
-        moon.rotation.y += Math.PI;
-        scene.add(moon);
-    }
-
-    function sun() {
-        sun = makePlanet(ballSize * 8, 'images/sun.jpg');
-        var texture = new THREE.TextureLoader().load('images/sun.jpg');
-        sun.material.lightMap = texture;
-        sun.material.lightMapIntensity = 0.8;
-        sun.position.set(0, 0, 0);//set sun position
-        scene.add(sun);//add sun to scene
-    }
-
-    function mercury() {
-        mercury = makePlanet(ballSize * 0.6, 'images/mercury.jpg', mercuryDistance);
-        mercury.position.set(0, 0, 0);//set sun position
-        scene.add(mercury);//add sun to scene
-    }
-
-    function venus() {
-        venus = makePlanet(ballSize, 'images/venus.jpg', venusDistance);
-        venus.position.set(0, 0, 0);//set sun position
-        scene.add(venus);//add sun to scene
-    }
-
-    function mars() {
-        mars = makePlanet(ballSize * 0.7, 'images/mars.jpg', marsDistance);
-        mars.position.set(0, 0, 0);//set sun position
-        scene.add(mars);//add sun to scene
-    }
-
-    function jupiter() {
-        jupiter = makePlanet(ballSize * 2, 'images/jupiter.jpg', jupiterDistance);
-        jupiter.position.set(0, 0, 0);//set sun position
-        scene.add(jupiter);//add sun to scene
-    }
-
-    function saturn() {
-        saturn = makePlanet(ballSize * 1.8, 'images/saturn.jpg', saturnDistance);
-        saturn.position.set(0, 0, 0);//set sun position
-        scene.add(saturn);//add sun to scene
-        saturnRing1 = new THREE.Mesh(new THREE.RingGeometry(ballSize * 2 + 0.2, ballSize * 2 + 0.5, 32, 6),
-            new THREE.MeshLambertMaterial({
-                color: 0xCC6600,
-                side: THREE.DoubleSide,
-                transparent: true,
-                opacity: 0.4
-            }));
-        saturnRing1.rotation.x = Math.PI / 3;
-        saturnRing1.rotation.y = Math.PI / 4;
-        saturnRing2 = new THREE.Mesh(new THREE.RingGeometry(ballSize * 2 + 0.6, ballSize * 2 + 0.8, 32, 6),
-            new THREE.MeshLambertMaterial({
-                color: 0xEE7700,
-                side: THREE.DoubleSide,
-                transparent: true,
-                opacity: 0.4
-            }));
-        saturnRing2.rotation.x = Math.PI / 3;
-        saturnRing2.rotation.y = Math.PI / 4;
-        scene.add(saturnRing1, saturnRing2);
+        function moon() {
+            moon = makePlanet(ballSize * 0.28, 'images/moon.jpg');
+            moon.rotation.y += Math.PI;
+            scene.add(moon);
         }
 
-
-    function uranus() {
-        uranus = makePlanet(ballSize * 1.5, 'images/uranus.jpg', uranusDistance);
-        uranus.position.set(0, 0, 0);//set sun position
-        uranusRing = new THREE.Mesh(new THREE.RingGeometry(ballSize * 1.5 + 0.4, ballSize * 1.5 + 0.5, 32, 6),
-            new THREE.MeshLambertMaterial({
-                color: 0xFFFFBB,
-                side: THREE.DoubleSide,
-                transparent: true,
-                opacity: 0.4
-            }));
-        scene.add(uranus);//add sun to scene
-        scene.add(uranusRing)
-    }
-
-    function neptune() {
-        neptune = makePlanet(ballSize * 1.5, 'images/neptune.jpg', neptuneDistance);
-        neptune.position.set(0, 0, 0);//set sun position
-        scene.add(neptune);//add sun to scene
-    }
-
-    function pluto() {
-        pluto = makePlanet(ballSize * 0.5, 'images/pluto.jpg', plutoDistance);
-        pluto.position.set(0, 0, 0);//set sun position
-        scene.add(pluto);//add sun to scene
-    }
-
-     function makePlanet(size, image, distance) {
-         var texture;
-        if (image) {
-            texture = new THREE.TextureLoader().load(image);
+        function sun() {
+            sun = makePlanet(ballSize * 8, 'images/sun.jpg');
+            var texture = new THREE.TextureLoader().load('images/sun.jpg');
+            sun.material.lightMap = texture;
+            sun.material.lightMapIntensity = 0.8;
+            sun.position.set(0, 0, 0);//set sun position
+            scene.add(sun);//add sun to scene
         }
-        var sunGeo = new THREE.SphereGeometry(size, 40, 40);
-        var sunMat = new THREE.MeshLambertMaterial({//construct material
-            map: texture,
-            //color: 0xFFFFBB,
-            wireframe: false,
-        });
-        if (distance) {
-            var track = new THREE.Mesh(new THREE.RingGeometry(distance - 0.02, distance + 0.02, 128, 1),
-                new THREE.MeshBasicMaterial({
-                    color: 0x888888,
-                    side: THREE.DoubleSide
+
+        function mercury() {
+            mercury = makePlanet(ballSize * 0.6, 'images/mercury.jpg', mercuryDistance);
+            mercury.position.set(0, 0, 0);//set sun position
+            scene.add(mercury);//add sun to scene
+        }
+
+        function venus() {
+            venus = makePlanet(ballSize, 'images/venus.jpg', venusDistance);
+            venus.position.set(0, 0, 0);//set sun position
+            scene.add(venus);//add sun to scene
+        }
+
+        function mars() {
+            mars = makePlanet(ballSize * 0.7, 'images/mars.jpg', marsDistance);
+            mars.position.set(0, 0, 0);//set sun position
+            scene.add(mars);//add sun to scene
+        }
+
+        function jupiter() {
+            jupiter = makePlanet(ballSize * 2, 'images/jupiter.jpg', jupiterDistance);
+            jupiter.position.set(0, 0, 0);//set sun position
+            scene.add(jupiter);//add sun to scene
+        }
+
+        function saturn() {
+            saturn = makePlanet(ballSize * 1.8, 'images/saturn.jpg', saturnDistance);
+            saturn.position.set(0, 0, 0);//set sun position
+            scene.add(saturn);//add sun to scene
+            saturnRing1 = new THREE.Mesh(new THREE.RingGeometry(ballSize * 2 + 0.2, ballSize * 2 + 0.5, 32, 6),
+                new THREE.MeshLambertMaterial({
+                    color: 0xCC6600,
+                    side: THREE.DoubleSide,
+                    transparent: true,
+                    opacity: 0.4
                 }));
-            track.rotation.x = Math.PI / 2;
-            scene.add(track);
+            saturnRing1.rotation.x = Math.PI / 3;
+            saturnRing1.rotation.y = Math.PI / 4;
+            saturnRing2 = new THREE.Mesh(new THREE.RingGeometry(ballSize * 2 + 0.6, ballSize * 2 + 0.8, 32, 6),
+                new THREE.MeshLambertMaterial({
+                    color: 0xEE7700,
+                    side: THREE.DoubleSide,
+                    transparent: true,
+                    opacity: 0.4
+                }));
+            saturnRing2.rotation.x = Math.PI / 3;
+            saturnRing2.rotation.y = Math.PI / 4;
+            scene.add(saturnRing1, saturnRing2);
         }
-        return new THREE.Mesh(sunGeo, sunMat);//make model
-    }
 
-    function rotation() {
-        angleEarth += rotateSpeed;
-        angleMoon += rotateSpeed * 365 / 27.32;
-        angleMecury += rotateSpeed * 4.16;
-        angleVenus += rotateSpeed * 1.6;
-        angleMars += rotateSpeed * 0.53;
-        angleJupiter += rotateSpeed * 0.08;
-        angleSaturn += rotateSpeed * 0.033;
-        angleUranus += rotateSpeed * 0.012;
-        angleNeptune += rotateSpeed * 0.006;
-        anglePluto += rotateSpeed * 0.004;
-        earth.rotation.y += rotateSpeed * 365;
-        moon.rotation.y += rotateSpeed * 365 / 27.32;
-        sun.rotation.y += rotateSpeed * 14.6;
-        mercury.rotation.y += rotateSpeed * 6.205;
-        venus.rotation.y -= rotateSpeed * 1.46;
-        mars.rotation.y += rotateSpeed * 365;
-        jupiter.rotation.y += rotateSpeed * 894.25;
-        saturn.rotation.y += rotateSpeed * 857.75;
-        uranus.rotation.y -= rotateSpeed * 489.1;
-        neptune.rotation.y += rotateSpeed * 456.25;
-        pluto.rotation.y -= rotateSpeed * 56.94;
 
-        sunLight.position.x = sun.position.x;
-        sunLight.position.z = sun.position.z;      
+        function uranus() {
+            uranus = makePlanet(ballSize * 1.5, 'images/uranus.jpg', uranusDistance);
+            uranus.position.set(0, 0, 0);//set sun position
+            uranusRing = new THREE.Mesh(new THREE.RingGeometry(ballSize * 1.5 + 0.4, ballSize * 1.5 + 0.5, 32, 6),
+                new THREE.MeshLambertMaterial({
+                    color: 0xFFFFBB,
+                    side: THREE.DoubleSide,
+                    transparent: true,
+                    opacity: 0.4
+                }));
+            scene.add(uranus);//add sun to scene
+            scene.add(uranusRing)
+        }
 
-        earth.position.x = earthDistance * Math.sin(angleEarth);
-        earth.position.z = earthDistance * Math.cos(angleEarth);
-        moon.position.x = earth.position.x + earthDistance * 0.08 * Math.sin(angleMoon);
-        moon.position.y = earthDistance * 0.08 * Math.sin(angleMoon) / 4;
-        moon.position.z = earth.position.z + earthDistance * 0.08 * Math.cos(angleMoon);
+        function neptune() {
+            neptune = makePlanet(ballSize * 1.5, 'images/neptune.jpg', neptuneDistance);
+            neptune.position.set(0, 0, 0);//set sun position
+            scene.add(neptune);//add sun to scene
+        }
 
-        mercury.position.x = mercuryDistance * Math.sin(angleMecury);//水星
-        mercury.position.z = mercuryDistance * Math.cos(angleMecury);//水星
+        function pluto() {
+            pluto = makePlanet(ballSize * 0.5, 'images/pluto.jpg', plutoDistance);
+            pluto.position.set(0, 0, 0);//set sun position
+            scene.add(pluto);//add sun to scene
+        }
 
-        venus.position.x =venusDistance * Math.sin(angleVenus);//金星
-        venus.position.z = venusDistance * Math.cos(angleVenus);
+        function makePlanet(size, image, distance) {
+            var texture;
+            if (image) {
+                texture = new THREE.TextureLoader(manager).load(image);
+            }
+            var sunGeo = new THREE.SphereGeometry(size, 40, 40);
+            var sunMat = new THREE.MeshLambertMaterial({//construct material
+                map: texture,
+                //color: 0xFFFFBB,
+                wireframe: false,
+            });
+            if (distance) {
+                var track = new THREE.Mesh(new THREE.RingGeometry(distance - 0.02, distance + 0.02, 128, 1),
+                    new THREE.MeshBasicMaterial({
+                        color: 0x888888,
+                        side: THREE.DoubleSide
+                    }));
+                track.rotation.x = Math.PI / 2;
+                scene.add(track);
+            }
+            return new THREE.Mesh(sunGeo, sunMat);//make model
+        }
 
-        mars.position.x = marsDistance  * Math.sin(angleMars); //火星
-        mars.position.z = marsDistance * Math.cos(angleMars); //火星
+        function rotation() {
+            angleEarth += rotateSpeed;
+            angleMoon += rotateSpeed * 365 / 27.32;
+            angleMecury += rotateSpeed * 4.16;
+            angleVenus += rotateSpeed * 1.6;
+            angleMars += rotateSpeed * 0.53;
+            angleJupiter += rotateSpeed * 0.08;
+            angleSaturn += rotateSpeed * 0.033;
+            angleUranus += rotateSpeed * 0.012;
+            angleNeptune += rotateSpeed * 0.006;
+            anglePluto += rotateSpeed * 0.004;
+            earth.rotation.y += rotateSpeed * 365;
+            moon.rotation.y += rotateSpeed * 365 / 27.32;
+            sun.rotation.y += rotateSpeed * 14.6;
+            mercury.rotation.y += rotateSpeed * 6.205;
+            venus.rotation.y -= rotateSpeed * 1.46;
+            mars.rotation.y += rotateSpeed * 365;
+            jupiter.rotation.y += rotateSpeed * 894.25;
+            saturn.rotation.y += rotateSpeed * 857.75;
+            uranus.rotation.y -= rotateSpeed * 489.1;
+            neptune.rotation.y += rotateSpeed * 456.25;
+            pluto.rotation.y -= rotateSpeed * 56.94;
 
-        jupiter.position.x = jupiterDistance * Math.sin(angleJupiter);//木星
-        jupiter.position.z = jupiterDistance * Math.cos(angleJupiter);//木星
+            sunLight.position.x = sun.position.x;
+            sunLight.position.z = sun.position.z;
 
-        saturn.position.x = saturnDistance * Math.sin(angleSaturn);//土星
-        saturn.position.z = saturnDistance * Math.cos(angleSaturn);//土星
-        saturnRing1.position.x = saturn.position.x;
-        saturnRing1.position.z = saturn.position.z;
-        saturnRing2.position.x = saturn.position.x;
-        saturnRing2.position.z = saturn.position.z;
+            earth.position.x = earthDistance * Math.sin(angleEarth);
+            earth.position.z = earthDistance * Math.cos(angleEarth);
+            moon.position.x = earth.position.x + earthDistance * 0.08 * Math.sin(angleMoon);
+            moon.position.y = earthDistance * 0.08 * Math.sin(angleMoon) / 4;
+            moon.position.z = earth.position.z + earthDistance * 0.08 * Math.cos(angleMoon);
 
-        uranus.position.x = uranusDistance * Math.sin(angleUranus);//天王星
-        uranus.position.z = uranusDistance * Math.cos(angleUranus);//天王星
-        uranusRing.position.x = uranus.position.x;
-        uranusRing.position.z = uranus.position.z;
+            mercury.position.x = mercuryDistance * Math.sin(angleMecury);//水星
+            mercury.position.z = mercuryDistance * Math.cos(angleMecury);//水星
 
-        neptune.position.x = neptuneDistance * Math.sin(angleNeptune);//海王星
-        neptune.position.z = neptuneDistance * Math.cos(angleNeptune);//海王星
+            venus.position.x = venusDistance * Math.sin(angleVenus);//金星
+            venus.position.z = venusDistance * Math.cos(angleVenus);
 
-        pluto.position.x = plutoDistance * Math.sin(anglePluto);//冥王星
-        pluto.position.z = plutoDistance * Math.cos(anglePluto);//冥王星
-    }
+            mars.position.x = marsDistance * Math.sin(angleMars); //火星
+            mars.position.z = marsDistance * Math.cos(angleMars); //火星
+
+            jupiter.position.x = jupiterDistance * Math.sin(angleJupiter);//木星
+            jupiter.position.z = jupiterDistance * Math.cos(angleJupiter);//木星
+
+            saturn.position.x = saturnDistance * Math.sin(angleSaturn);//土星
+            saturn.position.z = saturnDistance * Math.cos(angleSaturn);//土星
+            saturnRing1.position.x = saturn.position.x;
+            saturnRing1.position.z = saturn.position.z;
+            saturnRing2.position.x = saturn.position.x;
+            saturnRing2.position.z = saturn.position.z;
+
+            uranus.position.x = uranusDistance * Math.sin(angleUranus);//天王星
+            uranus.position.z = uranusDistance * Math.cos(angleUranus);//天王星
+            uranusRing.position.x = uranus.position.x;
+            uranusRing.position.z = uranus.position.z;
+
+            neptune.position.x = neptuneDistance * Math.sin(angleNeptune);//海王星
+            neptune.position.z = neptuneDistance * Math.cos(angleNeptune);//海王星
+
+            pluto.position.x = plutoDistance * Math.sin(anglePluto);//冥王星
+            pluto.position.z = plutoDistance * Math.cos(anglePluto);//冥王星
+        }
         //渲染
-    function render() {
-        requestAnimationFrame(render);
-        rotation();
-        controls.update();
-        camera.lookAt(cameraTarget);
-        renderer.render(scene, camera);
-    }
-
-    /*function ev(ev){
-    var e=ev||event;
-    return e
-    }
-
-    onkeydown=function(event){
-    if(ev(event).ctrlKey){
-      var code=ev(event).keyCode
-      code==49 ? container.style.background='#0f0' : ''
-      code==50 ? container.style.background='#ff0' : ''
-      code==51 ? container.style.background='#00f' : ''
-      code==38 ? resize('big') : ''
-      code==40 ? resize('small') : ''
-      code==13 ? console.log('重置') : ''
-      function resize(re){
-        switch(re){
-          case 'big':
-            container.style.width=container.offsetWidth+10+'px';
-            container.style.height=container.offsetHeight+10+'px';
-            break
-          case 'small':
-            container.style.width=container.offsetWidth-10+'px';
-            container.style.height=container.offsetHeight-10+'px';
-            break
+        function render() {
+            requestAnimationFrame(render);
+            rotation();
+            controls.update();
+            camera.lookAt(cameraTarget);
+            renderer.render(scene, camera);
         }
-      }
-    }else{
-      var code=ev(event).keyCode
-      code==37 ? container.style.left=container.offsetLeft-10+'px' : ''
-      code==38 ? container.style.top=container.offsetTop-10+'px' : ''
-      code==39 ? container.style.left=container.offsetLeft+10+'px' : ''
-      code==40 ? container.style.top=container.offsetTop+10+'px' : ''
-    }
 
-  }*/
+        /*function ev(ev){
+        var e=ev||event;
+        return e
+        }
 
+        onkeydown=function(event){
+        if(ev(event).ctrlKey){
+          var code=ev(event).keyCode
+          code==49 ? container.style.background='#0f0' : ''
+          code==50 ? container.style.background='#ff0' : ''
+          code==51 ? container.style.background='#00f' : ''
+          code==38 ? resize('big') : ''
+          code==40 ? resize('small') : ''
+          code==13 ? console.log('重置') : ''
+          function resize(re){
+            switch(re){
+              case 'big':
+                container.style.width=container.offsetWidth+10+'px';
+                container.style.height=container.offsetHeight+10+'px';
+                break
+              case 'small':
+                container.style.width=container.offsetWidth-10+'px';
+                container.style.height=container.offsetHeight-10+'px';
+                break
+            }
+          }
+        }else{
+          var code=ev(event).keyCode
+          code==37 ? container.style.left=container.offsetLeft-10+'px' : ''
+          code==38 ? container.style.top=container.offsetTop-10+'px' : ''
+          code==39 ? container.style.left=container.offsetLeft+10+'px' : ''
+          code==40 ? container.style.top=container.offsetTop+10+'px' : ''
+        }
 
-    $(document).ready(start);
+      }*/
+        initial();
     </script>
-    <button id="sun">sun</button>
-    <button id="mercury" style="left:40px;">mercury</button>
-    <button id="venus" style="left:107px;">venus</button>
-    <button id="earth" style="left:160px;">earth</button>
-    <button id="mars" style="left:210px;">mars</button>
-    <button id="jupiter" style="left:259px;">jupiter</button>
-    <button id="saturn" style="left:316px;">saturn</button>
-    <button id="uranus" style="left:372px;">uranus</button>
-    <button id="neptune" style="left:431px;">neptune</button>
-    <button id="pluto" style="left:497px;">pluto</button>
-    <input id="speed" style="left:700px;" value="20" type="text" />
-    <button id="updateSpeed" style="left:860px;">updateSpeed</button>
     <div id="container">
     </div>
+    <table id="buttonTable" cellspacing="2">
+        <tr>
+            <td><button id="sun">sun</button></td>
+            <td><button id="mercury">mercury</button></td>
+            <td><button id="venus">venus</button></td>
+            <td><button id="earth">earth</button></td>
+            <td> <button id="mars">mars</button></td>
+            <td> <button id="jupiter">jupiter</button></td>
+            <td> <button id="saturn">saturn</button></td>
+            <td> <button id="uranus">uranus</button></td>
+            <td><button id="neptune">neptune</button></td>
+            <td><button id="pluto">pluto</button></td>
+            <td></td>
+            <td><input id="speed" value="20" type="text" /></td>
+            <td><button id="updateSpeed">updateSpeed</button></td>
+        </tr>
+    </table>
+    <div id="preloadContainer">
+        <div id="sun"></div>
+        <div class="orbit" id="earth-orbit">
+            <div class="globe" id="earth">
+                <div class="orbit" id="moon-orbit">
+                    <div class="globe" id="moon"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="preloadPrecentage">跑了0光年</div>
+    <div id="message">太陽系<br />Solar System</div>
 </body>
 </html>
