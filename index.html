@@ -105,15 +105,7 @@
             background: black;
             margin: 0px;
             overflow: hidden;
-        }
-
-        #message {
-            position: absolute;
-            color: white;
-            font-size: 200%;
-            top: calc(100% - 80px);
-            left: 20px;
-        }
+        }      
 
         #buttonTable {
             display:none;
@@ -130,9 +122,14 @@
             border-radius: 5px;
         }
 
-            button:hover {
+            button {
                 background-image: linear-gradient( to right, #FFFFFF, #DDDDDD, #888888, #444444, #000000 );
                 animation: slidebg 5s linear infinite;
+            }
+
+            button:hover {
+               background-image: linear-gradient(90deg, #00C0FF 0%, #FFCF00 49%, #FC4F4F 80%, #00C0FF 100%);
+   animation:slidebg 2s linear infinite;
             }
 
         @keyframes slidebg {
@@ -140,6 +137,79 @@
                 background-position: 20vw;
             }
         }
+        @import url(https://fonts.googleapis.com/css?family=Open+Sans:800);
+
+        body svg{
+            
+            font: 5em/1 Open Sans, Impact;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .text {
+            fill: none;
+            stroke-width: 3;
+            stroke-linejoin: round;
+            stroke-dasharray: 70 330;
+            stroke-dashoffset: 0;
+            -webkit-animation: stroke 6s infinite linear;
+            animation: stroke 6s infinite linear;
+        }
+
+            .text:nth-child(5n + 1) {
+                stroke: #F2385A;
+                -webkit-animation-delay: -1.2s;
+                animation-delay: -1.2s;
+            }
+
+            .text:nth-child(5n + 2) {
+                stroke: #F5A503;
+                -webkit-animation-delay: -2.4s;
+                animation-delay: -2.4s;
+            }
+
+            .text:nth-child(5n + 3) {
+                stroke: #E9F1DF;
+                -webkit-animation-delay: -3.6s;
+                animation-delay: -3.6s;
+            }
+
+            .text:nth-child(5n + 4) {
+                stroke: #56D9CD;
+                -webkit-animation-delay: -4.8s;
+                animation-delay: -4.8s;
+            }
+
+            .text:nth-child(5n + 5) {
+                stroke: #3AA1BF;
+                -webkit-animation-delay: -6s;
+                animation-delay: -6s;
+            }
+
+        @-webkit-keyframes stroke {
+            100% {
+                stroke-dashoffset: -400;
+            }
+        }
+
+        @keyframes stroke {
+            100% {
+                stroke-dashoffset: -400;
+            }
+        }
+        /* Other styles */
+       
+
+        svg {
+            position: absolute;            
+            z-index:100;
+            top:90%;
+            left:0%;
+            width: 10%;
+            height:10%;
+            display:none;
+        }
+
     </style>
 </head>
 <body>
@@ -157,6 +227,7 @@
                 document.getElementById("preloadContainer").style.display = "none";
                 document.getElementById("preloadPrecentage").style.display = "none";
                 $("#buttonTable").show();
+                $("#messageBox").show();
                 document.getElementById("preloadPrecentage").innerHTML = "跑了100光年";
                 start();
                 console.log("done");
@@ -224,57 +295,69 @@
             document.getElementById('sun').addEventListener('click', function () {
                 cameraTarget = sun.position;
                 controls.target = sun.position;
-                document.getElementById("message").innerHTML = '太陽<br>Sun';
+                document.getElementById("message0").innerHTML = '太陽';
+                document.getElementById("message1").innerHTML = 'Sun';
             }, false);
             document.getElementById('mercury').addEventListener('click', function () {
                 cameraTarget = mercury.position;
                 controls.target = mercury.position;
-                document.getElementById("message").innerHTML = '水星<br>Mercury';
+                document.getElementById("message0").innerHTML = '水星';
+                document.getElementById("message1").innerHTML = 'Mercury';
             }, false);
             document.getElementById('venus').addEventListener('click', function () {
                 cameraTarget = venus.position;
                 controls.target = venus.position;
-                document.getElementById("message").innerHTML = '金星<br>Venus';
+                document.getElementById("message0").innerHTML = '金星';
+                document.getElementById("message1").innerHTML = 'Venus';
             }, false);
             document.getElementById('earth').addEventListener('click', function () {
                 cameraTarget = earth.position;
                 controls.target = earth.position;
-                document.getElementById("message").innerHTML = '地球<br>Earth';
+                document.getElementById("message0").innerHTML = '地球';
+                document.getElementById("message1").innerHTML = 'Earth';
             }, false);
             document.getElementById('mars').addEventListener('click', function () {
                 cameraTarget = mars.position;
                 controls.target = mars.position;
-                document.getElementById("message").innerHTML = '火星<br>Mars';
+                document.getElementById("message0").innerHTML = '火星';
+                document.getElementById("message1").innerHTML = 'Mars';
             }, false);
             document.getElementById('jupiter').addEventListener('click', function () {
                 cameraTarget = jupiter.position;
                 controls.target = jupiter.position;
-                document.getElementById("message").innerHTML = '木星<br>Jupiter';
+                document.getElementById("message0").innerHTML = '木星';
+                document.getElementById("message1").innerHTML = 'Jupiter';
             }, false);
             document.getElementById('saturn').addEventListener('click', function () {
                 cameraTarget = saturn.position;
                 controls.target = saturn.position;
-                document.getElementById("message").innerHTML = '土星<br>Saturn';
+                document.getElementById("message0").innerHTML = '土星';
+                document.getElementById("message1").innerHTML = 'Saturn';
             }, false);
             document.getElementById('uranus').addEventListener('click', function () {
                 cameraTarget = uranus.position;
                 controls.target = uranus.position;
-                document.getElementById("message").innerHTML = '天王星<br>Uranus';
+                document.getElementById("message0").innerHTML = '天王星';
+                document.getElementById("message1").innerHTML = 'Uranus';
             }, false);
             document.getElementById('neptune').addEventListener('click', function () {
                 cameraTarget = neptune.position;
                 controls.target = neptune.position;
-                document.getElementById("message").innerHTML = '海王星<br>Neptune';
+                document.getElementById("message0").innerHTML = '海王星';
+                document.getElementById("message1").innerHTML = 'Neptune';
             }, false);
             document.getElementById('pluto').addEventListener('click', function () {
                 cameraTarget = pluto.position;//換看的對象
                 controls.target = pluto.position;//換視角
-                document.getElementById("message").innerHTML = '冥王星<br>Pluto';
+                document.getElementById("message0").innerHTML = '冥王星';
+                document.getElementById("message1").innerHTML = 'Pluto';
             }, false);
             document.getElementById('updateSpeed').addEventListener('click', function () { var speed = parseInt(document.getElementById("speed").value); if (!isNaN(speed)) rotateSpeed = speed * 0.00004; }, false);
         }
         function onWindowResize() {
-            document.getElementById("message").style.top = window.innerHeight - 80 + 'px';
+            $("#massegeBox").css("top", )
+            /*document.getElementById("message0").style.top = window.innerHeight - 80 + 'px';
+            document.getElementById("message1").style.top = window.innerHeight - 80 + 'px';*/
             camera.aspect = window.innerWidth / window.innerHeight;//aspect是甚麼?
             camera.updateProjectionMatrix();//camera 更新
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -592,7 +675,20 @@
         </div>
     </div>
     <div id="preloadPrecentage">跑了0光年</div>
-    <div id="message">太陽系<br />Solar System</div>
-    <iframe src="https://giphy.com/embed/vCVbnPl6tZ30c" width="480" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/black-hole-vCVbnPl6tZ30c">via GIPHY</a></p>
+    <!--div id="message">太陽系<br />Solar System</!div>-->
+    <svg viewBox="0 0 480 250" id="messageBox">
+        <!-- Symbol-->
+        <symbol id="s-text">
+            <text text-anchor="middle" x="52%" y="22%" dy=".35em" id="message0">太陽系</text>
+            <text text-anchor="middle" x="52%" y="60%" dy=".35em" id="message1">Solar System</text>
+        </symbol>
+        <!-- Duplicate symbols-->
+        <use class="text" xlink:href="#s-text"></use>
+        <use class="text" xlink:href="#s-text"></use>
+        <use class="text" xlink:href="#s-text"></use>
+        <use class="text" xlink:href="#s-text"></use>
+        <use class="text" xlink:href="#s-text"></use>
+    </svg>
+    <iframe src="https://giphy.com/embed/vCVbnPl6tZ30c" style="width:120px; height:120px; position:absolute; top:10px; left:90%" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
 </body>
 </html>
