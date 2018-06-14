@@ -17,20 +17,17 @@
             color:white;
         }
         .blackHole {
-            position: absolute;
-            top: 10%;
-            left: 90%;
-            display: none;
-            background-color: #666666;
+           position: absolute;
+            display: block;
+            width: 200px;
+            height: 200px;
+            left: 85%;
+            top:75%;
+            transition:2s ease;
+            cursor: pointer;
         }
-
-        #blackHole1 {            
-            animation: orbit 1s linear infinite;
-        }
-
-        #blackHole0 {            
-            animation: orbit 2s linear infinite;
-            transform: rotate(180deg);
+        .blackHole:hover {
+            transform: scale(1.2);
         }
 
         #preloadPrecentage {
@@ -241,13 +238,61 @@
             height: 20%;
             display: none;
         }
+
+        .arc:before, .arc:after {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 4px solid #000;
+    top: -4px;
+    left: -4px;
+    border-color: hsl(160, 70%, 50%) transparent transparent transparent;
+    border-radius: 50%;
+
+    z-index: -8;
+    content: "";
+}
+
+.arc:after{
+    border-color:transparent transparent hsl(345, 70%, 50%) transparent;
+}
+
+.arc {
+    position: absolute;
+    display: block;
+    width: 85%;
+    height: 85%;
+    margin: 7.5%;
+    border-radius: 50%;
+    animation: 15s rotate linear infinite;
+  box-shadow: 0px 0px 0px 2px #fff2;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(90deg);
+    } 100% {
+        transform: rotate(810deg);
+    }
+}
     </style>
 </head>
 <body>
+    <audio id = "sound" preload = "auto">
+         <source src = "sound.wav"
+            type = "audio/mpeg">
+         Browser does not support audio tag</audio>
+    <audio id = "sound2" preload = "auto">
+         <source src = "sound2.wav"
+            type = "audio/mpeg">
+         Browser does not support audio tag</audio>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="three.js-master/build/three.js"></script>
     <script type="text/javascript" src="three.js-master\examples\js\controls\OrbitControls.js"></script>
     <script type="text/javascript">
+        sound = document.getElementById( "sound" );
+        sound2 = document.getElementById( "sound2" );
         var manager;
         var dontClick = 0;
         function initial() {
@@ -262,12 +307,13 @@
                 $("#messageBox").show();
                 $(".blackHole").show();
                 $(".blackHole").on("click", function () {
-                    if (dontClick < 2) {
+                    if (dontClick == 0) {
+
                         dontClick++;
-                        $("#dontMessage").html("母湯<br>" + "(" + dontClick + "/2)");
+                        $("#dontMessage").html("跟你說不要點了");
                         $("#dontMessage").show();
-                        document.getElementById("message0").innerHTML = '母湯';
-                        document.getElementById("message1").innerHTML = '(' + dontClick + '/2)';
+                        document.getElementById("message0").innerHTML = '跟你說';
+                        document.getElementById("message1").innerHTML = '不要點了';
                         setTimeout(function () {
                             $("#dontMessage").hide();
                             document.getElementById("message0").innerHTML = '太陽系';
@@ -276,7 +322,26 @@
                         console.log(dontClick);
                         return;
                     }
-                    $("body").html("");
+
+                    if (dontClick == 1) {
+                        sound.play();
+                        dontClick++;
+                        $("#dontMessage").html("母湯喔");
+                        $("#dontMessage").show();
+                        document.getElementById("message0").innerHTML = '';
+                        document.getElementById("message1").innerHTML = '母湯喔';
+                        setTimeout(function () {
+                            $("#dontMessage").hide();
+                            document.getElementById("message0").innerHTML = '太陽系';
+                            document.getElementById("message1").innerHTML = 'Solar System';
+                        }, 2000);
+                        console.log(dontClick);
+                        return;
+                    }
+
+                    sound2.play();                   
+                    
+                    
                 });
                 document.getElementById("preloadPrecentage").innerHTML = "跑了100光年";
                 start();
@@ -739,8 +804,41 @@
         <use class="text" xlink:href="#s-text"></use>
         <use class="text" xlink:href="#s-text"></use>
     </svg>
-    <div id="blackHole0" class="blackHole" style="height:10vmin; width:10vmin;"></div>
-    <div id="blackHole1" class="blackHole" style="height:10vmin; width:10vmin;"></div>
+    
     <div id="dontMessage">母湯</div>
+
+<div id="blackHole0" class="blackHole">
+  <div class="arc">
+    <div class="arc">
+      <div class="arc">
+        <div class="arc">
+          <div class="arc">
+            <div class="arc">
+              <div class="arc">
+                <div class="arc">
+                  <div class="arc">
+                    <div class="arc">
+                      <div class="arc">
+                        <div class="arc">
+                          <div class="arc">
+                            <div class="arc">
+                              <div class="arc">
+                                <div class="arc"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
