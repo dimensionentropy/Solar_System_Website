@@ -4,6 +4,35 @@
     <meta charset="UTF-8">
     <title>Do not click the black hole</title>
     <style>
+        #dontMessage {
+            background-color:black;
+            height: 100%;
+            width: 100%;
+            display: none;
+            font-size: 45vmin;
+            position:absolute;
+            left:0%;
+            top:0%;
+            text-align:center;
+            color:white;
+        }
+        .blackHole {
+            position: absolute;
+            top: 10%;
+            left: 90%;
+            display: none;
+            background-color: #666666;
+        }
+
+        #blackHole1 {            
+            animation: orbit 1s linear infinite;
+        }
+
+        #blackHole0 {            
+            animation: orbit 2s linear infinite;
+            transform: rotate(180deg);
+        }
+
         #preloadPrecentage {
             color: white;
             font-size: 400%;
@@ -105,10 +134,10 @@
             background: black;
             margin: 0px;
             overflow: hidden;
-        }      
+        }
 
         #buttonTable {
-            display:none;
+            display: none;
             width: 100%;
         }
 
@@ -122,14 +151,14 @@
             border-radius: 5px;
         }
 
-            button {
-                background-image: linear-gradient( to right, #FFFFFF, #DDDDDD, #888888, #444444, #000000 );
-                animation: slidebg 5s linear infinite;
-            }
+        button {
+            background-image: linear-gradient( to right, #FFFFFF, #DDDDDD, #888888, #444444, #000000 );
+            animation: slidebg 5s linear infinite;
+        }
 
             button:hover {
-               background-image: linear-gradient(90deg, #00C0FF 0%, #FFCF00 49%, #FC4F4F 80%, #00C0FF 100%);
-   animation:slidebg 2s linear infinite;
+                background-image: linear-gradient(90deg, #00C0FF 0%, #FFCF00 49%, #FC4F4F 80%, #00C0FF 100%);
+                animation: slidebg 2s linear infinite;
             }
 
         @keyframes slidebg {
@@ -137,10 +166,10 @@
                 background-position: 20vw;
             }
         }
+
         @import url(https://fonts.googleapis.com/css?family=Open+Sans:800);
 
-        body svg{
-            
+        body svg {
             font: 5em/1 Open Sans, Impact;
             text-transform: uppercase;
             margin: 0;
@@ -154,6 +183,10 @@
             stroke-dashoffset: 0;
             -webkit-animation: stroke 6s infinite linear;
             animation: stroke 6s infinite linear;
+            -webkit-user-select: none; /* Safari 3.1+ */
+            -moz-user-select: none; /* Firefox 2+ */
+            -ms-user-select: none; /* IE 10+ */
+            user-select: none; /* Standard syntax */
         }
 
             .text:nth-child(5n + 1) {
@@ -198,18 +231,16 @@
             }
         }
         /* Other styles */
-       
 
         svg {
-            position: absolute;            
-            z-index:100;
-            top:80%;
-            left:0%;
+            position: absolute;
+            z-index: 100;
+            top: 80%;
+            left: 0%;
             width: 20%;
-            height:20%;
-            display:none;
+            height: 20%;
+            display: none;
         }
-
     </style>
 </head>
 <body>
@@ -218,6 +249,7 @@
     <script type="text/javascript" src="three.js-master\examples\js\controls\OrbitControls.js"></script>
     <script type="text/javascript">
         var manager;
+        var dontClick = 0;
         function initial() {
             manager = new THREE.LoadingManager;
             manager.onStart = function () {
@@ -228,6 +260,24 @@
                 document.getElementById("preloadPrecentage").style.display = "none";
                 $("#buttonTable").show();
                 $("#messageBox").show();
+                $(".blackHole").show();
+                $(".blackHole").on("click", function () {
+                    if (dontClick < 2) {
+                        dontClick++;
+                        $("#dontMessage").html("母湯<br>" + "(" + dontClick + "/2)");
+                        $("#dontMessage").show();
+                        document.getElementById("message0").innerHTML = '母湯';
+                        document.getElementById("message1").innerHTML = '(' + dontClick + '/2)';
+                        setTimeout(function () {
+                            $("#dontMessage").hide();
+                            document.getElementById("message0").innerHTML = '太陽系';
+                            document.getElementById("message1").innerHTML = 'Solar System';
+                        }, 2000);
+                        console.log(dontClick);
+                        return;
+                    }
+                    $("body").html("");
+                });
                 document.getElementById("preloadPrecentage").innerHTML = "跑了100光年";
                 start();
                 console.log("done");
@@ -678,7 +728,7 @@
     <!--div id="message">太陽系<br />Solar System</!div>-->
     <svg viewBox="0 0 480 250" id="messageBox">
         <!-- Symbol-->
-        <symbol id="s-text">
+        <symbol id="s-text" unselectable="on">
             <text text-anchor="middle" x="52%" y="22%" dy=".35em" id="message0">太陽系</text>
             <text text-anchor="middle" x="52%" y="60%" dy=".35em" id="message1">Solar System</text>
         </symbol>
@@ -689,6 +739,8 @@
         <use class="text" xlink:href="#s-text"></use>
         <use class="text" xlink:href="#s-text"></use>
     </svg>
-    <iframe src="https://giphy.com/embed/vCVbnPl6tZ30c" style="width:120px; height:120px; position:absolute; top:10px; left:90%" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+    <div id="blackHole0" class="blackHole" style="height:10vmin; width:10vmin;"></div>
+    <div id="blackHole1" class="blackHole" style="height:10vmin; width:10vmin;"></div>
+    <div id="dontMessage">母湯</div>
 </body>
 </html>
