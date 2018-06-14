@@ -5,13 +5,14 @@
     <title>Do not click the black hole</title>
     <style>
         #preloadPrecentage {
-            color:white;
-            font-size:400%;
+            color: white;
+            font-size: 400%;
             left: calc(42%);
             position: absolute;
             top: calc(70%);
-            text-align:center;
+            text-align: center;
         }
+
         #preloadContainer {
             height: 400px;
             left: calc(50% - 200px);
@@ -98,34 +99,41 @@
                 transform: rotate(360deg);
             }
         }
+
         body {
             font-family: Monospace;
             background: black;
             margin: 0px;
             overflow: hidden;
-        }       
+        }
+
         #message {
-            position:absolute;        
-            color:white;
-            font-size:200%;
-            top:calc(100% - 80px);
-            left:20px;
+            position: absolute;
+            color: white;
+            font-size: 200%;
+            top: calc(100% - 80px);
+            left: 20px;
         }
-        #buttonTable{
-            width:100%;
+
+        #buttonTable {
+            display:none;
+            width: 100%;
         }
+
         table {
-            position:absolute;
+            position: absolute;
         }
-        button, input {          
-           width:100%;
-           font-size:100%;
-           border-radius:5px;
-        }        
-        button:hover {
-            background-image: linear-gradient( to right, #FFFFFF, #DDDDDD, #888888, #444444, #000000 );
-            animation: slidebg 5s linear infinite;
+
+        button, input {
+            width: 100%;
+            font-size: 100%;
+            border-radius: 5px;
         }
+
+            button:hover {
+                background-image: linear-gradient( to right, #FFFFFF, #DDDDDD, #888888, #444444, #000000 );
+                animation: slidebg 5s linear infinite;
+            }
 
         @keyframes slidebg {
             to {
@@ -148,12 +156,13 @@
             manager.onLoad = function () {
                 document.getElementById("preloadContainer").style.display = "none";
                 document.getElementById("preloadPrecentage").style.display = "none";
+                $("#buttonTable").show();
                 document.getElementById("preloadPrecentage").innerHTML = "跑了100光年";
                 start();
                 console.log("done");
             };
             manager.onProgress = function (item, loaded, total) {
-                document.getElementById("preloadPrecentage").innerHTML = "跑了" + Math.floor((loaded + 1) / total * 100) + "光年";
+                document.getElementById("preloadPrecentage").innerHTML = "跑了" + Math.floor((loaded) / total * 100) + "光年";
                 console.log(item, loaded, total);
             };
             scene = new THREE.Scene();//创建一个新场景
@@ -182,7 +191,6 @@
             pluto();
             makeStars();
         }
-
         var sunLight;
         var container;
         var camera, scene, renderer;
@@ -199,7 +207,6 @@
             y: 0,
             z: cameraDistance
         }
-
         function main() {
             container = document.getElementById("container");
             document.body.appendChild(container);
@@ -266,14 +273,12 @@
             }, false);
             document.getElementById('updateSpeed').addEventListener('click', function () { var speed = parseInt(document.getElementById("speed").value); if (!isNaN(speed)) rotateSpeed = speed * 0.00004; }, false);
         }
-
         function onWindowResize() {
             document.getElementById("message").style.top = window.innerHeight - 80 + 'px';
             camera.aspect = window.innerWidth / window.innerHeight;//aspect是甚麼?
             camera.updateProjectionMatrix();//camera 更新
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
-
         function makeStars() {
             var starNum = 20000;
             var positions = new Float32Array(starNum * 3);
@@ -283,7 +288,6 @@
                 let x = (Math.random() * 2 * gap);
                 let y = (Math.random() * 2 * gap);
                 let z = (Math.random() * 2 * gap);
-
                 var pos = { x, y, z };
                 var biggest = x > y ? x > z ? 'x' : 'z' : y > z ? 'y' : 'z';
                 if (pos[biggest] < gap) {
@@ -292,14 +296,11 @@
                     y = pos['y'];
                     z = pos['z'];
                 }
-
                 positions[i] = x * (Math.random() < 0.5 ? 1 : -1);
                 positions[i + 1] = y * (Math.random() < 0.5 ? 1 : -1);
                 positions[i + 2] = z * (Math.random() < 0.5 ? 1 : -1);
-
                 let color = new THREE.Color();
                 color.setRGB((Math.random() + 1) / 2, (Math.random() + 1) / 2, (Math.random() + 1) / 2)
-
                 colors[i] = color.r;
                 colors[i + 1] = color.g;
                 colors[i + 2] = color.b;
@@ -314,7 +315,6 @@
             }))
             scene.add(stars);
         }
-
         //创建一个球
         var earth;
         var moon;
@@ -330,7 +330,6 @@
         var uranusRing;
         var neptune;//海王星
         var pluto;//冥王星
-
         var angleEarth = 1.57;
         var angleMoon = 1.57;
         var angleMoon = 1.57;
@@ -342,7 +341,6 @@
         var angleUranus = 1.8;
         var angleNeptune = -1;
         var anglePluto = 1.2;
-
         /*var angleEarth = 1.57;
         var angleMecury = 1.57;
         var angleVenus = 1.57;
@@ -352,7 +350,6 @@
         var angleUranus = 1.57;
         var angleNeptune = 1.57;
         var anglePluto = 1.57;*/
-
         var earthDistance = ballSize * 25;
         var mercuryDistance = earthDistance * 0.6;//水星
         var venusDistance = earthDistance * 0.8;
@@ -362,20 +359,17 @@
         var uranusDistance = earthDistance * 2.0;//天王星
         var neptuneDistance = earthDistance * 2.2;//海王星
         var plutoDistance = earthDistance * 2.4;//冥王星
-
         function earth() {
             earth = makePlanet(ballSize, 'images/earth_8k.jpg', earthDistance);//make model
             earth.rotation.z += 0.5;
             earth.position.set(0, 0, 0);//set earth position
             scene.add(earth);//add earth to scene
         }
-
         function moon() {
             moon = makePlanet(ballSize * 0.28, 'images/moon.jpg');
             moon.rotation.y += Math.PI;
             scene.add(moon);
         }
-
         function sun() {
             sun = makePlanet(ballSize * 8, 'images/sun.jpg');
             var texture = new THREE.TextureLoader().load('images/sun.jpg');
@@ -384,31 +378,26 @@
             sun.position.set(0, 0, 0);//set sun position
             scene.add(sun);//add sun to scene
         }
-
         function mercury() {
             mercury = makePlanet(ballSize * 0.6, 'images/mercury.jpg', mercuryDistance);
             mercury.position.set(0, 0, 0);//set sun position
             scene.add(mercury);//add sun to scene
         }
-
         function venus() {
             venus = makePlanet(ballSize, 'images/venus.jpg', venusDistance);
             venus.position.set(0, 0, 0);//set sun position
             scene.add(venus);//add sun to scene
         }
-
         function mars() {
             mars = makePlanet(ballSize * 0.7, 'images/mars.jpg', marsDistance);
             mars.position.set(0, 0, 0);//set sun position
             scene.add(mars);//add sun to scene
         }
-
         function jupiter() {
             jupiter = makePlanet(ballSize * 2, 'images/jupiter.jpg', jupiterDistance);
             jupiter.position.set(0, 0, 0);//set sun position
             scene.add(jupiter);//add sun to scene
         }
-
         function saturn() {
             saturn = makePlanet(ballSize * 1.8, 'images/saturn.jpg', saturnDistance);
             saturn.position.set(0, 0, 0);//set sun position
@@ -433,8 +422,6 @@
             saturnRing2.rotation.y = Math.PI / 4;
             scene.add(saturnRing1, saturnRing2);
         }
-
-
         function uranus() {
             uranus = makePlanet(ballSize * 1.5, 'images/uranus.jpg', uranusDistance);
             uranus.position.set(0, 0, 0);//set sun position
@@ -448,19 +435,16 @@
             scene.add(uranus);//add sun to scene
             scene.add(uranusRing)
         }
-
         function neptune() {
             neptune = makePlanet(ballSize * 1.5, 'images/neptune.jpg', neptuneDistance);
             neptune.position.set(0, 0, 0);//set sun position
             scene.add(neptune);//add sun to scene
         }
-
         function pluto() {
             pluto = makePlanet(ballSize * 0.5, 'images/pluto.jpg', plutoDistance);
             pluto.position.set(0, 0, 0);//set sun position
             scene.add(pluto);//add sun to scene
         }
-
         function makePlanet(size, image, distance) {
             var texture;
             if (image) {
@@ -483,7 +467,6 @@
             }
             return new THREE.Mesh(sunGeo, sunMat);//make model
         }
-
         function rotation() {
             angleEarth += rotateSpeed;
             angleMoon += rotateSpeed * 365 / 27.32;
@@ -506,43 +489,33 @@
             uranus.rotation.y -= rotateSpeed * 489.1;
             neptune.rotation.y += rotateSpeed * 456.25;
             pluto.rotation.y -= rotateSpeed * 56.94;
-
             sunLight.position.x = sun.position.x;
             sunLight.position.z = sun.position.z;
-
             earth.position.x = earthDistance * Math.sin(angleEarth);
             earth.position.z = earthDistance * Math.cos(angleEarth);
             moon.position.x = earth.position.x + earthDistance * 0.08 * Math.sin(angleMoon);
             moon.position.y = earthDistance * 0.08 * Math.sin(angleMoon) / 4;
             moon.position.z = earth.position.z + earthDistance * 0.08 * Math.cos(angleMoon);
-
             mercury.position.x = mercuryDistance * Math.sin(angleMecury);//水星
             mercury.position.z = mercuryDistance * Math.cos(angleMecury);//水星
-
             venus.position.x = venusDistance * Math.sin(angleVenus);//金星
             venus.position.z = venusDistance * Math.cos(angleVenus);
-
             mars.position.x = marsDistance * Math.sin(angleMars); //火星
             mars.position.z = marsDistance * Math.cos(angleMars); //火星
-
             jupiter.position.x = jupiterDistance * Math.sin(angleJupiter);//木星
             jupiter.position.z = jupiterDistance * Math.cos(angleJupiter);//木星
-
             saturn.position.x = saturnDistance * Math.sin(angleSaturn);//土星
             saturn.position.z = saturnDistance * Math.cos(angleSaturn);//土星
             saturnRing1.position.x = saturn.position.x;
             saturnRing1.position.z = saturn.position.z;
             saturnRing2.position.x = saturn.position.x;
             saturnRing2.position.z = saturn.position.z;
-
             uranus.position.x = uranusDistance * Math.sin(angleUranus);//天王星
             uranus.position.z = uranusDistance * Math.cos(angleUranus);//天王星
             uranusRing.position.x = uranus.position.x;
             uranusRing.position.z = uranus.position.z;
-
             neptune.position.x = neptuneDistance * Math.sin(angleNeptune);//海王星
             neptune.position.z = neptuneDistance * Math.cos(angleNeptune);//海王星
-
             pluto.position.x = plutoDistance * Math.sin(anglePluto);//冥王星
             pluto.position.z = plutoDistance * Math.cos(anglePluto);//冥王星
         }
@@ -554,12 +527,10 @@
             camera.lookAt(cameraTarget);
             renderer.render(scene, camera);
         }
-
         /*function ev(ev){
         var e=ev||event;
         return e
         }
-
         onkeydown=function(event){
         if(ev(event).ctrlKey){
           var code=ev(event).keyCode
@@ -588,7 +559,6 @@
           code==39 ? container.style.left=container.offsetLeft+10+'px' : ''
           code==40 ? container.style.top=container.offsetTop+10+'px' : ''
         }
-
       }*/
         initial();
     </script>
@@ -623,5 +593,6 @@
     </div>
     <div id="preloadPrecentage">跑了0光年</div>
     <div id="message">太陽系<br />Solar System</div>
+    <iframe src="https://giphy.com/embed/vCVbnPl6tZ30c" width="480" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/black-hole-vCVbnPl6tZ30c">via GIPHY</a></p>
 </body>
 </html>
