@@ -1,7 +1,0 @@
-https://www.solarsystemscope.com/textures/
-
-地球 http://www.shadedrelief.com/natural3/pages/textures.html (已確定可以使用)
-
-基礎程式碼 https://blog.csdn.net/qq_37338983/article/details/78569139
-
-http://planetpixelemporium.com/pluto.html

@@ -18,7 +18,7 @@
         }
         .blackHole {
             position: absolute;
-            display: block;
+            display: none;
             width: 16vmin;
             height: 16vmin;
             left:calc(90%);
@@ -302,7 +302,7 @@
             }
             manager.onLoad = function () {
                 document.getElementById("preloadContainer").style.display = "none";
-                document.getElementById("preloadPrecentage").style.display = "none";
+                document.getElementById("preloadPrecentage").style.display = "none";            
                 $("#buttonTable").show();
                 $("#messageBox").show();
                 $(".blackHole").show();
@@ -341,15 +341,18 @@
                     /*var blackHolePos = $(".blackHole").offset();
                     blackHolePos.top="50%";
                     blackHolePos.left="50%";
-                    console.log(blackHolePos);*/
-                    /*$(".blackHole").css("top", "40%");
+                    console.log(blackHolePos);
+                    $(".blackHole").css("top", "40%");
                     $(".blackHole").css("left", "45%");
                     $(".blackHole").css("transform", "scale(8)");
-                    rotateSpeed = 1000;*/
-                    sound2.play();                   
-                    
-                    
-                });
+                    rotateSpeed = 100;*/
+                    sound2.play();
+                    var rotateValue = 45;
+                    setInterval(function(){
+                        $("body").css("transform", "rotate("+ rotateValue +"deg)");
+                        rotateValue = -rotateValue;
+                    },500);
+                });//end of click
                 document.getElementById("preloadPrecentage").innerHTML = "跑了100光年";
                 start();
                 console.log("done");
