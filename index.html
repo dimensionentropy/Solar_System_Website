@@ -9,7 +9,7 @@
             height: 100%;
             width: 100%;
             display: none;
-            font-size: 45vmin;
+            font-size: 40vmin;
             position:absolute;
             left:0%;
             top:0%;
@@ -25,6 +25,7 @@
             top:calc(78%);
             transition:2s ease;
             cursor: pointer;
+            z-index:100;
         }
         .blackHole:hover {
             transform: scale(1.6);
@@ -247,7 +248,7 @@
             border: 4px solid #000;
             top: -4px;
             left: -4px;
-            border-color: hsl(160, 70%, 50%) transparent transparent transparent;
+            border-color: hsl(276, 1%, 23%)  transparent transparent transparent;
             border-radius: 50%;
 
             z-index: -8;
@@ -255,7 +256,7 @@
         }
 
         .arc:after{
-            border-color:transparent transparent hsl(345, 70%, 50%) transparent;
+            border-color:transparent transparent hsl(276, 1%, 68%) transparent;
         }
 
         .arc {
@@ -283,7 +284,7 @@
          <source src = "sound.wav"
             type = "audio/mpeg">
          Browser does not support audio tag</audio>
-    <audio id = "sound2" preload = "auto">
+    <audio id = "sound2" preload = "auto" loop="loop">
          <source src = "sound2.wav"
             type = "audio/mpeg">
          Browser does not support audio tag</audio>
@@ -327,6 +328,7 @@
                         sound.play();
                         dontClick++;
                         $("#dontMessage").html("母湯喔");
+                        $("#dontMessage").css("top", "20%");
                         $("#dontMessage").show();
                         document.getElementById("message0").innerHTML = '';
                         document.getElementById("message1").innerHTML = '母湯喔';
@@ -338,20 +340,31 @@
                         console.log(dontClick);
                         return;
                     }
-                    /*var blackHolePos = $(".blackHole").offset();
+                    var blackHolePos = $(".blackHole").offset();
                     blackHolePos.top="50%";
                     blackHolePos.left="50%";
                     console.log(blackHolePos);
                     $(".blackHole").css("top", "40%");
                     $(".blackHole").css("left", "45%");
-                    $(".blackHole").css("transform", "scale(8)");
-                    rotateSpeed = 100;*/
-                    sound2.play();
-                    var rotateValue = 45;
+                    //$(".blackHole").css("transform", "scale(6)");
+                    rotateSpeed = 100;
+
+                    sound2.play()
+                    var rotateValue = 5;
+                    var intervalTime = 50;
+                    var scaleSize = 1.2;
+                    var bodySize=1;
+                    $("body").css("transform", "rotate("+ rotateValue +"deg)");
                     setInterval(function(){
                         $("body").css("transform", "rotate("+ rotateValue +"deg)");
-                        rotateValue = -rotateValue;
-                    },500);
+                       rotateValue += Math.floor(Math.random() * 40) - 20;
+                       $(".blackHole").css("transform", "scale(" + scaleSize + ")");
+                       $("#containContainer").css("transform", "scale(" + bodySize + ")");
+                       $("#container").css("transform", "scale(" + bodySize + ")");
+                       scaleSize += 0.2;
+                       if(bodySize>0)
+                       bodySize -= 0.01;
+                    },intervalTime);
                 });//end of click
                 document.getElementById("preloadPrecentage").innerHTML = "跑了100光年";
                 start();
@@ -770,52 +783,54 @@
       }*/
         initial();
     </script>
-    <div id="container">
-    </div>
-    <table id="buttonTable" cellspacing="2">
-        <tr>
-            <td><button id="sun">sun</button></td>
-            <td><button id="mercury">mercury</button></td>
-            <td><button id="venus">venus</button></td>
-            <td><button id="earth">earth</button></td>
-            <td> <button id="mars">mars</button></td>
-            <td> <button id="jupiter">jupiter</button></td>
-            <td> <button id="saturn">saturn</button></td>
-            <td> <button id="uranus">uranus</button></td>
-            <td><button id="neptune">neptune</button></td>
-            <td><button id="pluto">pluto</button></td>
-            <td></td>
-            <td><input id="speed" value="20" type="text" /></td>
-            <td><button id="updateSpeed">updateSpeed</button></td>
-        </tr>
-    </table>
-    <div id="preloadContainer">
-        <div id="sun"></div>
-        <div class="orbit" id="earth-orbit">
-            <div class="globe" id="earth">
-                <div class="orbit" id="moon-orbit">
-                    <div class="globe" id="moon"></div>
+    <div id="containContainer">
+        <div id="container">
+        </div>
+        <table id="buttonTable" cellspacing="2">
+            <tr>
+                <td><button id="sun">sun</button></td>
+                <td><button id="mercury">mercury</button></td>
+                <td><button id="venus">venus</button></td>
+                <td><button id="earth">earth</button></td>
+                <td> <button id="mars">mars</button></td>
+                <td> <button id="jupiter">jupiter</button></td>
+                <td> <button id="saturn">saturn</button></td>
+                <td> <button id="uranus">uranus</button></td>
+                <td><button id="neptune">neptune</button></td>
+                <td><button id="pluto">pluto</button></td>
+                <td></td>
+                <td><input id="speed" value="20" type="text" /></td>
+                <td><button id="updateSpeed">updateSpeed</button></td>
+            </tr>
+        </table>
+        <div id="preloadContainer">
+            <div id="sun"></div>
+            <div class="orbit" id="earth-orbit">
+                <div class="globe" id="earth">
+                    <div class="orbit" id="moon-orbit">
+                        <div class="globe" id="moon"></div>
+                    </div>
                 </div>
             </div>
         </div>
+        <div id="preloadPrecentage">跑了0光年</div>
+        <!--div id="message">太陽系<br />Solar System</!div>-->
+        <svg viewBox="0 0 480 250" id="messageBox">
+            <!-- Symbol-->
+            <symbol id="s-text" unselectable="on">
+                <text text-anchor="middle" x="52%" y="22%" dy=".35em" id="message0">太陽系</text>
+                <text text-anchor="middle" x="52%" y="60%" dy=".35em" id="message1">Solar System</text>
+            </symbol>
+            <!-- Duplicate symbols-->
+            <use class="text" xlink:href="#s-text"></use>
+            <use class="text" xlink:href="#s-text"></use>
+            <use class="text" xlink:href="#s-text"></use>
+            <use class="text" xlink:href="#s-text"></use>
+            <use class="text" xlink:href="#s-text"></use>
+        </svg>
+        
+        <div id="dontMessage">母湯</div>
     </div>
-    <div id="preloadPrecentage">跑了0光年</div>
-    <!--div id="message">太陽系<br />Solar System</!div>-->
-    <svg viewBox="0 0 480 250" id="messageBox">
-        <!-- Symbol-->
-        <symbol id="s-text" unselectable="on">
-            <text text-anchor="middle" x="52%" y="22%" dy=".35em" id="message0">太陽系</text>
-            <text text-anchor="middle" x="52%" y="60%" dy=".35em" id="message1">Solar System</text>
-        </symbol>
-        <!-- Duplicate symbols-->
-        <use class="text" xlink:href="#s-text"></use>
-        <use class="text" xlink:href="#s-text"></use>
-        <use class="text" xlink:href="#s-text"></use>
-        <use class="text" xlink:href="#s-text"></use>
-        <use class="text" xlink:href="#s-text"></use>
-    </svg>
-    
-    <div id="dontMessage">母湯</div>
 
 <div id="blackHole0" class="blackHole">
   <div class="arc">
