@@ -10,19 +10,11 @@
             width: 100%;
             display: none;
             font-size: 40vmin;
-<<<<<<< HEAD
             position: absolute;
             left: 0%;
             top: 0%;
             text-align: center;
             color: white;
-=======
-            position:absolute;
-            left:0%;
-            top:0%;
-            text-align:center;
-            color:white;
->>>>>>> a17b904bd03bd9a06fbdc6471028d06ee5159bd1
         }
 
         .blackHole {
@@ -34,14 +26,7 @@
             top: calc(78%);
             transition: 2s ease;
             cursor: pointer;
-<<<<<<< HEAD
             z-index: 100;
-=======
-            z-index:100;
-        }
-        .blackHole:hover {
-            transform: scale(1.6);
->>>>>>> a17b904bd03bd9a06fbdc6471028d06ee5159bd1
         }
 
             .blackHole:hover {
@@ -264,23 +249,14 @@
             border: 4px solid #000;
             top: -4px;
             left: -4px;
-<<<<<<< HEAD
             border-color: hsl(276, 1%, 23%) transparent transparent transparent;
-=======
-            border-color: hsl(276, 1%, 23%)  transparent transparent transparent;
->>>>>>> a17b904bd03bd9a06fbdc6471028d06ee5159bd1
             border-radius: 50%;
             z-index: -8;
             content: "";
         }
 
-<<<<<<< HEAD
         .arc:after {
             border-color: transparent transparent hsl(276, 1%, 68%) transparent;
-=======
-        .arc:after{
-            border-color:transparent transparent hsl(276, 1%, 68%) transparent;
->>>>>>> a17b904bd03bd9a06fbdc6471028d06ee5159bd1
         }
 
         .arc {
@@ -306,7 +282,6 @@
     </style>
 </head>
 <body>
-<<<<<<< HEAD
     <audio id="sound" preload="auto">
         <source src="sound.wav"
                 type="audio/mpeg">
@@ -317,16 +292,6 @@
                 type="audio/mpeg">
         Browser does not support audio tag
     </audio>
-=======
-    <audio id = "sound" preload = "auto">
-         <source src = "sound.wav"
-            type = "audio/mpeg">
-         Browser does not support audio tag</audio>
-    <audio id = "sound2" preload = "auto" loop="loop">
-         <source src = "sound2.wav"
-            type = "audio/mpeg">
-         Browser does not support audio tag</audio>
->>>>>>> a17b904bd03bd9a06fbdc6471028d06ee5159bd1
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="three.js-master/build/three.js"></script>
     <script type="text/javascript" src="three.js-master\examples\js\controls\OrbitControls.js"></script>
@@ -378,27 +343,17 @@
                         return;
                     }
                     var blackHolePos = $(".blackHole").offset();
-<<<<<<< HEAD
                     blackHolePos.top = "50%";
                     blackHolePos.left = "50%";
-=======
-                    blackHolePos.top="50%";
-                    blackHolePos.left="50%";
->>>>>>> a17b904bd03bd9a06fbdc6471028d06ee5159bd1
                     console.log(blackHolePos);
                     $(".blackHole").css("top", "40%");
                     $(".blackHole").css("left", "45%");
                     //$(".blackHole").css("transform", "scale(6)");
                     rotateSpeed = 100;
-<<<<<<< HEAD
-=======
-
->>>>>>> a17b904bd03bd9a06fbdc6471028d06ee5159bd1
                     sound2.play()
                     var rotateValue = 5;
                     var intervalTime = 50;
                     var scaleSize = 1.2;
-<<<<<<< HEAD
                     var bodySize = 1;
                     $("body").css("transform", "rotate(" + rotateValue + "deg)");
                     setInterval(function () {
@@ -411,20 +366,6 @@
                         if (bodySize > 0)
                             bodySize -= 0.01;
                     }, intervalTime);
-=======
-                    var bodySize=1;
-                    $("body").css("transform", "rotate("+ rotateValue +"deg)");
-                    setInterval(function(){
-                        $("body").css("transform", "rotate("+ rotateValue +"deg)");
-                       rotateValue += Math.floor(Math.random() * 40) - 20;
-                       $(".blackHole").css("transform", "scale(" + scaleSize + ")");
-                       $("#containContainer").css("transform", "scale(" + bodySize + ")");
-                       $("#container").css("transform", "scale(" + bodySize + ")");
-                       scaleSize += 0.2;
-                       if(bodySize>0)
-                       bodySize -= 0.01;
-                    },intervalTime);
->>>>>>> a17b904bd03bd9a06fbdc6471028d06ee5159bd1
                 });//end of click
                 document.getElementById("preloadPrecentage").innerHTML = "跑了100光年";
                 start();
@@ -494,7 +435,7 @@
                 clickPlanet(sun.position, '太陽', 'Sun', sun.geometry.parameters.radius);
             });
             $('#mercury').click(function () {
-                clickPlanet(mercury.position, '水星', 'Mercury', mercury.geometry.parameters.radius);             
+                clickPlanet(mercury.position, '水星', 'Mercury', mercury.geometry.parameters.radius + 0.1);             
             });
             $('#venus').click(function () {
                 clickPlanet(venus.position, '金星', 'Venus', venus.geometry.parameters.radius);
@@ -518,7 +459,7 @@
                 clickPlanet(neptune.position, '海王星', 'Neptune', neptune.geometry.parameters.radius); 
             });
             $('#pluto').click(function () {
-                clickPlanet(pluto.position, '冥王星', 'Pluto', pluto.geometry.parameters.radius + 1);                
+                clickPlanet(pluto.position, '冥王星', 'Pluto', pluto.geometry.parameters.radius + 0.1);                
             });
             $('#updateSpeed').click(function () {
                 var speed = parseInt(document.getElementById("speed").value);
@@ -869,22 +810,11 @@
             <use class="text" xlink:href="#s-text"></use>
             <use class="text" xlink:href="#s-text"></use>
         </svg>
-<<<<<<< HEAD
 
         <div id="dontMessage">母湯</div>
     </div>
 
     <div id="blackHole0" class="blackHole">
-=======
-        
-        <div id="dontMessage">母湯</div>
-    </div>
-
-<div id="blackHole0" class="blackHole">
-  <div class="arc">
-    <div class="arc">
-      <div class="arc">
->>>>>>> a17b904bd03bd9a06fbdc6471028d06ee5159bd1
         <div class="arc">
             <div class="arc">
                 <div class="arc">
