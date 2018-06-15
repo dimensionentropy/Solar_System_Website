@@ -16,7 +16,6 @@
             text-align: center;
             color: white;
         }
-
         .blackHole {
             position: absolute;
             display: none;
@@ -28,11 +27,9 @@
             cursor: pointer;
             z-index: 100;
         }
-
             .blackHole:hover {
                 transform: scale(1.6);
             }
-
         #preloadPrecentage {
             color: white;
             font-size: 400%;
@@ -41,7 +38,6 @@
             top: calc(70%);
             text-align: center;
         }
-
         #preloadContainer {
             height: 400px;
             left: calc(50% - 200px);
@@ -49,7 +45,6 @@
             top: calc(50% - 200px);
             width: 400px;
         }
-
             #preloadContainer #sun {
                 background-color: yellow;
                 border-radius: 50%;
@@ -61,7 +56,6 @@
                 top: 150px;
                 width: 100px;
             }
-
             #preloadContainer .orbit {
                 border: solid;
                 border-color: white transparent transparent transparent;
@@ -75,7 +69,6 @@
                 -webkit-transform-origin: center;
                 transform-origin: center;
             }
-
                 #preloadContainer .orbit#earth-orbit {
                     -webkit-animation: orbit 9.1s linear infinite;
                     animation: orbit 9.1s linear infinite;
@@ -84,7 +77,6 @@
                     top: 50px;
                     width: 300px;
                 }
-
                 #preloadContainer .orbit#moon-orbit {
                     -webkit-animation: orbit 0.7s linear infinite;
                     animation: orbit 0.7s linear infinite;
@@ -93,12 +85,10 @@
                     top: -25px;
                     width: 80px;
                 }
-
                 #preloadContainer .orbit .globe {
                     border-radius: 50%;
                     position: absolute;
                 }
-
                     #preloadContainer .orbit .globe#earth {
                         background: aqua;
                         height: 30px;
@@ -106,7 +96,6 @@
                         top: 28px;
                         width: 30px;
                     }
-
                     #preloadContainer .orbit .globe#moon {
                         background: #d6d6d6;
                         height: 12px;
@@ -114,67 +103,55 @@
                         top: 8px;
                         width: 12px;
                     }
-
         @-webkit-keyframes orbit {
             to {
                 -webkit-transform: rotate(360deg);
                 transform: rotate(360deg);
             }
         }
-
         @keyframes orbit {
             to {
                 -webkit-transform: rotate(360deg);
                 transform: rotate(360deg);
             }
         }
-
         body {
             font-family: Monospace;
             background: black;
             margin: 0px;
             overflow: hidden;
         }
-
         #buttonTable {
             display: none;
             width: 100%;
         }
-
         table {
             position: absolute;
         }
-
         button, input {
             width: 100%;
             font-size: 100%;
             border-radius: 5px;
         }
-
         button {
             background-image: linear-gradient( to right, #FFFFFF, #DDDDDD, #888888, #444444, #000000 );
             animation: slidebg 5s linear infinite;
         }
-
             button:hover {
                 background-image: linear-gradient(90deg, #00C0FF 0%, #FFCF00 49%, #FC4F4F 80%, #00C0FF 100%);
                 animation: slidebg 2s linear infinite;
             }
-
         @keyframes slidebg {
             to {
                 background-position: 20vw;
             }
         }
-
         @import url(https://fonts.googleapis.com/css?family=Open+Sans:800);
-
         body svg {
             font: 5em/1 Open Sans, Impact;
             text-transform: uppercase;
             margin: 0;
         }
-
         .text {
             fill: none;
             stroke-width: 3;
@@ -188,43 +165,36 @@
             -ms-user-select: none; /* IE 10+ */
             user-select: none; /* Standard syntax */
         }
-
             .text:nth-child(5n + 1) {
                 stroke: #F2385A;
                 -webkit-animation-delay: -1.2s;
                 animation-delay: -1.2s;
             }
-
             .text:nth-child(5n + 2) {
                 stroke: #F5A503;
                 -webkit-animation-delay: -2.4s;
                 animation-delay: -2.4s;
             }
-
             .text:nth-child(5n + 3) {
                 stroke: #E9F1DF;
                 -webkit-animation-delay: -3.6s;
                 animation-delay: -3.6s;
             }
-
             .text:nth-child(5n + 4) {
                 stroke: #56D9CD;
                 -webkit-animation-delay: -4.8s;
                 animation-delay: -4.8s;
             }
-
             .text:nth-child(5n + 5) {
                 stroke: #3AA1BF;
                 -webkit-animation-delay: -6s;
                 animation-delay: -6s;
             }
-
         @-webkit-keyframes stroke {
             100% {
                 stroke-dashoffset: -400;
             }
         }
-
         @keyframes stroke {
             100% {
                 stroke-dashoffset: -400;
@@ -240,7 +210,6 @@
             height: 20%;
             display: none;
         }
-
         .arc:before, .arc:after {
             display: block;
             position: absolute;
@@ -254,11 +223,9 @@
             z-index: -8;
             content: "";
         }
-
         .arc:after {
             border-color: transparent transparent hsl(276, 1%, 68%) transparent;
         }
-
         .arc {
             position: absolute;
             display: block;
@@ -269,12 +236,10 @@
             animation: 15s rotate linear infinite;
             box-shadow: 0px 0px 0px 2px #fff2;
         }
-
         @keyframes rotate {
             0% {
                 transform: rotate(90deg);
             }
-
             100% {
                 transform: rotate(810deg);
             }
@@ -330,7 +295,7 @@
                         sound.play();
                         dontClick++;
                         $("#dontMessage").html("母湯喔");
-                        $("#dontMessage").css("top", "20%");
+                        $("#dontMessage").css("padding-top", "10%");
                         $("#dontMessage").show();
                         document.getElementById("message0").innerHTML = '';
                         document.getElementById("message1").innerHTML = '母湯喔';
@@ -466,7 +431,6 @@
                 if (!isNaN(speed)) rotateSpeed = speed * 0.00004;
             });
         }//end of main
-
         function clickPlanet(position, name0, name1, distance) {           
             cameraTarget = position;//換看的對象
             controls.target = position;//換視角
