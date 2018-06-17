@@ -431,6 +431,7 @@
                 if (!isNaN(speed)) rotateSpeed = speed * 0.00004;
             });
         }//end of main
+
         function clickPlanet(position, name0, name1, distance) {           
             cameraTarget = position;//換看的對象
             controls.target = position;//換視角
@@ -438,14 +439,16 @@
             $("#message0").html(name0);
             $("#message1").html(name1);
         }
+
         function onWindowResize() {
-            $("#massegeBox").css("top", )
+            //$("#massegeBox").css("top", )
             /*document.getElementById("message0").style.top = window.innerHeight - 80 + 'px';
             document.getElementById("message1").style.top = window.innerHeight - 80 + 'px';*/
             camera.aspect = window.innerWidth / window.innerHeight;//aspect是甚麼?
             camera.updateProjectionMatrix();//camera 更新
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
+
         function makeStars() {
             var starNum = 20000;
             var positions = new Float32Array(starNum * 3);
@@ -508,15 +511,7 @@
         var angleUranus = 1.8;
         var angleNeptune = -1;
         var anglePluto = 1.2;
-        /*var angleEarth = 1.57;
-        var angleMecury = 1.57;
-        var angleVenus = 1.57;
-        var angleMars = 1.57;
-        var angleJupiter = 1.57;
-        var angleSaturn = 1.57;
-        var angleUranus = 1.57;
-        var angleNeptune = 1.57;
-        var anglePluto = 1.57;*/
+        
         var earthDistance = ballSize * 25;
         var mercuryDistance = earthDistance * 0.6;//水星
         var venusDistance = earthDistance * 0.8;
@@ -693,40 +688,7 @@
             controls.update();
             camera.lookAt(cameraTarget);
             renderer.render(scene, camera);
-        }
-        /*function ev(ev){
-        var e=ev||event;
-        return e
-        }
-        onkeydown=function(event){
-        if(ev(event).ctrlKey){
-          var code=ev(event).keyCode
-          code==49 ? container.style.background='#0f0' : ''
-          code==50 ? container.style.background='#ff0' : ''
-          code==51 ? container.style.background='#00f' : ''
-          code==38 ? resize('big') : ''
-          code==40 ? resize('small') : ''
-          code==13 ? console.log('重置') : ''
-          function resize(re){
-            switch(re){
-              case 'big':
-                container.style.width=container.offsetWidth+10+'px';
-                container.style.height=container.offsetHeight+10+'px';
-                break
-              case 'small':
-                container.style.width=container.offsetWidth-10+'px';
-                container.style.height=container.offsetHeight-10+'px';
-                break
-            }
-          }
-        }else{
-          var code=ev(event).keyCode
-          code==37 ? container.style.left=container.offsetLeft-10+'px' : ''
-          code==38 ? container.style.top=container.offsetTop-10+'px' : ''
-          code==39 ? container.style.left=container.offsetLeft+10+'px' : ''
-          code==40 ? container.style.top=container.offsetTop+10+'px' : ''
-        }
-      }*/
+        }       
         initial();
     </script>
     <div id="containContainer">
@@ -760,7 +722,6 @@
             </div>
         </div>
         <div id="preloadPrecentage">跑了0光年</div>
-        <!--div id="message">太陽系<br />Solar System</!div>-->
         <svg viewBox="0 0 480 250" id="messageBox">
             <!-- Symbol-->
             <symbol id="s-text" unselectable="on">
