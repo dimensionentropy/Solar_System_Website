@@ -265,7 +265,7 @@
         sound2 = document.getElementById("sound2");
         var manager;
         var dontClick = 0;
-        function initial() {
+        function initial() {	        
             manager = new THREE.LoadingManager;
             manager.onStart = function () {
                 console.log("start");
@@ -431,7 +431,6 @@
                 if (!isNaN(speed)) rotateSpeed = speed * 0.00004;
             });
         }//end of main
-
         function clickPlanet(position, name0, name1, distance) {           
             cameraTarget = position;//換看的對象
             controls.target = position;//換視角
@@ -439,7 +438,6 @@
             $("#message0").html(name0);
             $("#message1").html(name1);
         }
-
         function onWindowResize() {
             //$("#massegeBox").css("top", )
             /*document.getElementById("message0").style.top = window.innerHeight - 80 + 'px';
@@ -448,7 +446,6 @@
             camera.updateProjectionMatrix();//camera 更新
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
-
         function makeStars() {
             var starNum = 20000;
             var positions = new Float32Array(starNum * 3);
@@ -688,8 +685,11 @@
             controls.update();
             camera.lookAt(cameraTarget);
             renderer.render(scene, camera);
-        }       
-        initial();
+        }
+        function ppt(){
+        	window.location.href="";//捷克改這裡啦，網址貼這
+    	}
+        initial();        
     </script>
     <div id="containContainer">
         <div id="container">
@@ -709,6 +709,7 @@
                 <td></td>
                 <td><input id="speed" value="20" type="text" /></td>
                 <td><button id="updateSpeed">updateSpeed</button></td>
+                <td><button onclick="ppt()">說明文件</button></td>
             </tr>
         </table>
         <div id="preloadContainer">
