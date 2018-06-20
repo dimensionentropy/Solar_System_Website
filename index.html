@@ -16,6 +16,7 @@
             text-align: center;
             color: white;
         }
+
         .blackHole {
             position: absolute;
             display: none;
@@ -27,9 +28,11 @@
             cursor: pointer;
             z-index: 100;
         }
+
             .blackHole:hover {
                 transform: scale(1.6);
             }
+
         #preloadPrecentage {
             color: white;
             font-size: 400%;
@@ -38,6 +41,7 @@
             top: calc(70%);
             text-align: center;
         }
+
         #preloadContainer {
             height: 400px;
             left: calc(50% - 200px);
@@ -45,6 +49,7 @@
             top: calc(50% - 200px);
             width: 400px;
         }
+
             #preloadContainer #sun {
                 background-color: yellow;
                 border-radius: 50%;
@@ -56,6 +61,7 @@
                 top: 150px;
                 width: 100px;
             }
+
             #preloadContainer .orbit {
                 border: solid;
                 border-color: white transparent transparent transparent;
@@ -69,6 +75,7 @@
                 -webkit-transform-origin: center;
                 transform-origin: center;
             }
+
                 #preloadContainer .orbit#earth-orbit {
                     -webkit-animation: orbit 9.1s linear infinite;
                     animation: orbit 9.1s linear infinite;
@@ -77,6 +84,7 @@
                     top: 50px;
                     width: 300px;
                 }
+
                 #preloadContainer .orbit#moon-orbit {
                     -webkit-animation: orbit 0.7s linear infinite;
                     animation: orbit 0.7s linear infinite;
@@ -85,10 +93,12 @@
                     top: -25px;
                     width: 80px;
                 }
+
                 #preloadContainer .orbit .globe {
                     border-radius: 50%;
                     position: absolute;
                 }
+
                     #preloadContainer .orbit .globe#earth {
                         background: aqua;
                         height: 30px;
@@ -96,6 +106,7 @@
                         top: 28px;
                         width: 30px;
                     }
+
                     #preloadContainer .orbit .globe#moon {
                         background: #d6d6d6;
                         height: 12px;
@@ -103,55 +114,62 @@
                         top: 8px;
                         width: 12px;
                     }
+
         @-webkit-keyframes orbit {
             to {
                 -webkit-transform: rotate(360deg);
                 transform: rotate(360deg);
             }
         }
+
         @keyframes orbit {
             to {
                 -webkit-transform: rotate(360deg);
                 transform: rotate(360deg);
             }
         }
+
         body {
             font-family: Monospace;
             background: black;
             margin: 0px;
             overflow: hidden;
         }
+
         #buttonTable {
             display: none;
             width: 100%;
         }
+
         table {
             position: absolute;
         }
+
         button, input {
             width: 100%;
             font-size: 100%;
             border-radius: 5px;
         }
-        button {
-            background-image: linear-gradient( to right, #FFFFFF, #DDDDDD, #888888, #444444, #000000 );
-            animation: slidebg 5s linear infinite;
-        }
+
             button:hover {
                 background-image: linear-gradient(90deg, #00C0FF 0%, #FFCF00 49%, #FC4F4F 80%, #00C0FF 100%);
                 animation: slidebg 2s linear infinite;
             }
+
         @keyframes slidebg {
             to {
                 background-position: 20vw;
             }
         }
+
         @import url(https://fonts.googleapis.com/css?family=Open+Sans:800);
+
         body svg {
             font: 5em/1 Open Sans, Impact;
             text-transform: uppercase;
             margin: 0;
         }
+
         .text {
             fill: none;
             stroke-width: 3;
@@ -165,36 +183,43 @@
             -ms-user-select: none; /* IE 10+ */
             user-select: none; /* Standard syntax */
         }
+
             .text:nth-child(5n + 1) {
                 stroke: #F2385A;
                 -webkit-animation-delay: -1.2s;
                 animation-delay: -1.2s;
             }
+
             .text:nth-child(5n + 2) {
                 stroke: #F5A503;
                 -webkit-animation-delay: -2.4s;
                 animation-delay: -2.4s;
             }
+
             .text:nth-child(5n + 3) {
                 stroke: #E9F1DF;
                 -webkit-animation-delay: -3.6s;
                 animation-delay: -3.6s;
             }
+
             .text:nth-child(5n + 4) {
                 stroke: #56D9CD;
                 -webkit-animation-delay: -4.8s;
                 animation-delay: -4.8s;
             }
+
             .text:nth-child(5n + 5) {
                 stroke: #3AA1BF;
                 -webkit-animation-delay: -6s;
                 animation-delay: -6s;
             }
+
         @-webkit-keyframes stroke {
             100% {
                 stroke-dashoffset: -400;
             }
         }
+
         @keyframes stroke {
             100% {
                 stroke-dashoffset: -400;
@@ -210,6 +235,7 @@
             height: 20%;
             display: none;
         }
+
         .arc:before, .arc:after {
             display: block;
             position: absolute;
@@ -223,9 +249,11 @@
             z-index: -8;
             content: "";
         }
+
         .arc:after {
             border-color: transparent transparent hsl(276, 1%, 68%) transparent;
         }
+
         .arc {
             position: absolute;
             display: block;
@@ -236,10 +264,12 @@
             animation: 15s rotate linear infinite;
             box-shadow: 0px 0px 0px 2px #fff2;
         }
+
         @keyframes rotate {
             0% {
                 transform: rotate(90deg);
             }
+
             100% {
                 transform: rotate(810deg);
             }
@@ -400,7 +430,7 @@
                 clickPlanet(sun.position, '太陽', 'Sun', sun.geometry.parameters.radius);
             });
             $('#mercury').click(function () {
-                clickPlanet(mercury.position, '水星', 'Mercury', mercury.geometry.parameters.radius + 0.1);             
+                clickPlanet(mercury.position, '水星', 'Mercury', mercury.geometry.parameters.radius + 0.1);
             });
             $('#venus').click(function () {
                 clickPlanet(venus.position, '金星', 'Venus', venus.geometry.parameters.radius);
@@ -418,28 +448,26 @@
                 clickPlanet(saturn.position, '土星', 'Saturn', saturn.geometry.parameters.radius);
             });
             $('#uranus').click(function () {
-                clickPlanet(uranus.position, '天王星', 'Uranus', uranus.geometry.parameters.radius);                
+                clickPlanet(uranus.position, '天王星', 'Uranus', uranus.geometry.parameters.radius);
             });
             $('#neptune').click(function () {
-                clickPlanet(neptune.position, '海王星', 'Neptune', neptune.geometry.parameters.radius); 
+                clickPlanet(neptune.position, '海王星', 'Neptune', neptune.geometry.parameters.radius);
             });
             $('#pluto').click(function () {
-                clickPlanet(pluto.position, '冥王星', 'Pluto', pluto.geometry.parameters.radius + 0.1);                
+                clickPlanet(pluto.position, '冥王星', 'Pluto', pluto.geometry.parameters.radius + 0.1);
             });
             $('#updateSpeed').click(function () {
-                var speed = parseInt(document.getElementById("speed").value);
+                var speed = parseFloat(document.getElementById("speed").value);
                 if (!isNaN(speed)) rotateSpeed = speed * 0.00004;
             });
         }//end of main
-
-        function clickPlanet(position, name0, name1, distance) {           
+        function clickPlanet(position, name0, name1, distance) {
             cameraTarget = position;//換看的對象
             controls.target = position;//換視角
             camera.position.set(position.x + distance * 2, position.y + distance * 2, position.z + distance * 2);
             $("#message0").html(name0);
             $("#message1").html(name1);
         }
-
         function onWindowResize() {
             //$("#massegeBox").css("top", )
             /*document.getElementById("message0").style.top = window.innerHeight - 80 + 'px';
@@ -448,7 +476,6 @@
             camera.updateProjectionMatrix();//camera 更新
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
-
         function makeStars() {
             var starNum = 20000;
             var positions = new Float32Array(starNum * 3);
@@ -511,7 +538,7 @@
         var angleUranus = 1.8;
         var angleNeptune = -1;
         var anglePluto = 1.2;
-        
+
         var earthDistance = ballSize * 25;
         var mercuryDistance = earthDistance * 0.6;//水星
         var venusDistance = earthDistance * 0.8;
@@ -688,7 +715,10 @@
             controls.update();
             camera.lookAt(cameraTarget);
             renderer.render(scene, camera);
-        }       
+        }
+        function ppt(){
+            window.open("https://drive.google.com/file/d/1D5PuKdkPf-6yVLdsedO5O7Na49nfVdAk/view?usp=sharing");//捷克改這裡啦，網址貼這
+    	}
         initial();
     </script>
     <div id="containContainer">
@@ -709,6 +739,7 @@
                 <td></td>
                 <td><input id="speed" value="20" type="text" /></td>
                 <td><button id="updateSpeed">updateSpeed</button></td>
+                <td><button onclick="ppt()">說明文件</button></td>
             </tr>
         </table>
         <div id="preloadContainer">
