@@ -462,7 +462,7 @@
                 clickPlanet(pluto.position, '冥王星', 'Pluto', pluto.geometry.parameters.radius + 0.1);
             });
             $('#updateSpeed').click(function () {
-                var speed = parseInt(document.getElementById("speed").value);
+                var speed = parseFloat(document.getElementById("speed").value);
                 if (!isNaN(speed)) rotateSpeed = speed * 0.00004;
             });
         }//end of main
